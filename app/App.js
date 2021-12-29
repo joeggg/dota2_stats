@@ -10,25 +10,17 @@ function App() {
 
   useEffect(() => {
     fetch(`http://${ip}:5656/matches/${account_id}`).then(res => {
-      res.text().then(stuff => {
-        const matches = JSON.parse(stuff).results;
+      res.text().then(text => {
+        const matches = JSON.parse(text).results;
         const data = matches.map(match => {
-          const time = new Date(1000*match.start_time)
-          let isRadiant = null;
-          for (const player of match.players) {
-            if (player.account_id === account_id) {
-              isRadiant = player.player_slot < 5;
-              break;
-            }
-          }
           return (
             <h5 key={match.match_id}>
-              {time.toISOString().substring(0, 16).replace('T', ' ')} | {match.match_id} | {isRadiant === match.radiant_win ? "won" : "lost"}
+              {match.start_time} | {match.match_id} | {match.result}
             </h5>
           );
         });
         setMatches((<div>{data}</div>))
-        // console.log(matches);
+        console.log(matches);
       })
     })
   });

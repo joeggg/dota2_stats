@@ -2,6 +2,7 @@
     Fetching and processing match data
 """
 import asyncio
+from datetime import datetime
 from typing import Iterator, Optional
 
 from aiohttp import ClientError, ClientSession
@@ -32,7 +33,7 @@ async def async_request(
         return {}
 
 
-async def get_match_data(match_id: str) -> dict:
+async def get_match_data(match_id: str, account_id: str) -> dict:
     data = await async_request(
         DETAILS_ENDPOINT,
         params={
@@ -40,8 +41,23 @@ async def get_match_data(match_id: str) -> dict:
             "match_id": match_id,
         },
     )
-    print(f"Got match {match_id}")
-    return data.get("result")
+    match = data.get("result")
+    if not match:
+        print("No match in response")
+        return
+    # What team is the player on
+    is_radiant = None
+    for player in match["players"]:
+        if player["account_id"] == int(account_id):
+            is_radiant = player["player_slot"] < 5
+            break
+    # Format results
+    start_time = datetime.fromtimestamp(float(match["start_time"]))
+    return {
+        "start_time": start_time.isoformat().replace("T", " "),
+        "match_id": match["match_id"],
+        "result": "won" if is_radiant == match["radiant_win"] else "lost",
+    }
 
 
 async def get_matches(account_id: str, num_matches: int = 5) -> Iterator[dict]:
@@ -64,7 +80,7 @@ async def get_matches(account_id: str, num_matches: int = 5) -> Iterator[dict]:
     futures = []
     for match in match_list:
         match_id = match["match_id"]
-        futures.append(get_match_data(match_id))
+        futures.append(get_match_data(match_id, account_id))
     results = await asyncio.gather(*futures)
 
     return results
