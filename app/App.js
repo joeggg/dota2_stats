@@ -15,7 +15,7 @@ function App() {
         const data = matches.map(match => {
           return (
             <h5 key={match.match_id}>
-              {match.start_time} | {match.match_id} | {match.result}
+              {match.start_time} | {match.match_id} | {match.result} | {match.hero}
             </h5>
           );
         });

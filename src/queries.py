@@ -5,6 +5,7 @@ import asyncio
 from datetime import datetime
 from typing import Iterator, Optional
 
+import requests
 from aiohttp import ClientError, ClientSession
 
 
@@ -13,6 +14,14 @@ DETAILS_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/
 
 with open("secret/steam_key.txt", "r") as ffile:
     KEY = ffile.read()
+
+hero_data = requests.get(
+    "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1", params={"key": KEY}
+).json()
+HEROES = {
+    hero["id"]: hero["name"].removeprefix("npc_dota_hero_")
+    for hero in hero_data["result"]["heroes"]
+}
 
 
 async def async_request(
@@ -47,9 +56,11 @@ async def get_match_data(match_id: str, account_id: str) -> dict:
         return
     # What team is the player on
     is_radiant = None
+    hero = None
     for player in match["players"]:
         if player["account_id"] == int(account_id):
             is_radiant = player["player_slot"] < 5
+            hero = HEROES[player["hero_id"]]
             break
     # Format results
     start_time = datetime.fromtimestamp(float(match["start_time"]))
@@ -57,6 +68,7 @@ async def get_match_data(match_id: str, account_id: str) -> dict:
         "start_time": start_time.isoformat().replace("T", " "),
         "match_id": match["match_id"],
         "result": "won" if is_radiant == match["radiant_win"] else "lost",
+        "hero": hero,
     }
 
 
