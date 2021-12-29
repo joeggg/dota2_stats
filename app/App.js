@@ -23,7 +23,7 @@ function App() {
         console.log(matches);
       })
     })
-  });
+  }, []);
 
   return (
     <div className='App'>
