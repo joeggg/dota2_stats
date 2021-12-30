@@ -1,5 +1,5 @@
 """
-    HTTP server for rendering the frontend
+    HTTP server for sending data to frontend
 """
 import threading
 

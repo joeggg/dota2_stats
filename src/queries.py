@@ -3,24 +3,14 @@
 """
 import asyncio
 from datetime import datetime
-from pprint import pprint
 from typing import Iterator, List, Optional
 
-import requests
 from aiohttp import ClientError, ClientSession
 
+from .setup import StaticObjects
 
 HISTORY_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v1"
 DETAILS_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1"
-
-with open("secret/steam_key.txt", "r") as ffile:
-    KEY = ffile.read()
-
-hero_data = requests.get(
-    "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1",
-    params={"key": KEY, "language": "en-GB"},
-).json()
-HEROES = {hero["id"]: hero["localized_name"] for hero in hero_data["result"]["heroes"]}
 
 
 async def async_request(
@@ -45,7 +35,7 @@ async def get_match_data(match_id: str, account_id: str) -> dict:
     data = await async_request(
         DETAILS_ENDPOINT,
         params={
-            "key": KEY,
+            "key": StaticObjects.KEY,
             "match_id": match_id,
         },
     )
@@ -75,7 +65,7 @@ def extract_player_details(players: List[dict], account_id: str) -> dict:
     for player in players:
         if player["account_id"] == int(account_id):
             is_radiant = player["player_slot"] < 5
-            hero = HEROES[player["hero_id"]]
+            hero = StaticObjects.HEROES[player["hero_id"]]
             break
 
     return {
@@ -101,7 +91,7 @@ async def get_matches(account_id: str, num_matches: int = 5) -> Iterator[dict]:
     data = await async_request(
         HISTORY_ENDPOINT,
         params={
-            "key": KEY,
+            "key": StaticObjects.KEY,
             "account_id": account_id,
             "matches_requested": num_matches,
         },
