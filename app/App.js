@@ -14,13 +14,34 @@ function App() {
                 const matches = JSON.parse(text).results;
                 const data = matches.map((match) => {
                     return (
-                        <h5 key={match.match_id}>
-                            {match.hero} | {match.result} | {match.length} |{' '}
-                            {match.start_time}
-                        </h5>
+                        <tr key={match.match_id}>
+                            <td>{match.hero}</td>
+                            <td
+                                style={{
+                                    color:
+                                        match.result === 'won'
+                                            ? 'darkgreen'
+                                            : 'darkred',
+                                }}
+                            >
+                                {match.result}
+                            </td>
+                            <td>{match.length}</td>
+                            <td>{match.start_time}</td>
+                        </tr>
                     );
                 });
-                setMatches(<div>{data}</div>);
+                setMatches(
+                    <table key="match-data">
+                        <tr key="labels">
+                            <th>Hero</th>
+                            <th>Result</th>
+                            <th>Duration</th>
+                            <th>Time</th>
+                        </tr>
+                        {data}
+                    </table>
+                );
                 console.log(matches);
             });
         });
@@ -31,7 +52,9 @@ function App() {
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    Dota stuff goes here <br></br>
+                    Dota stuff goes here
+                    <br></br>
+                    <br></br>
                     Matches:
                 </p>
                 {matchData}

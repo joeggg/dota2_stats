@@ -3,6 +3,7 @@
 """
 import asyncio
 from datetime import datetime
+from pprint import pprint
 from typing import Iterator, List, Optional
 
 import requests
@@ -16,12 +17,10 @@ with open("secret/steam_key.txt", "r") as ffile:
     KEY = ffile.read()
 
 hero_data = requests.get(
-    "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1", params={"key": KEY}
+    "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1",
+    params={"key": KEY, "language": "en-GB"},
 ).json()
-HEROES = {
-    hero["id"]: hero["name"].removeprefix("npc_dota_hero_")
-    for hero in hero_data["result"]["heroes"]
-}
+HEROES = {hero["id"]: hero["localized_name"] for hero in hero_data["result"]["heroes"]}
 
 
 async def async_request(
