@@ -1,6 +1,7 @@
 """
     HTTP server for sending data to frontend
 """
+import logging
 import threading
 
 from flask import Flask
@@ -19,17 +20,17 @@ class ServerThread(threading.Thread):
         self.app.add_url_rule("/matches/<account_id>", view_func=routes.matches)
 
     def run(self) -> None:
-        print("Starting server")
+        logging.info("Starting server")
         self.server = create_server(self.app, listen="0.0.0.0:5656")
         self.server.run()
 
     def shutdown(self) -> None:
-        print("Trying to shut down server")
+        logging.info("Trying to shut down server")
         if self.is_alive():
             self.server.close()
         self.join(20)
 
         if not self.is_alive():
-            print("Server has shut down")
+            logging.info("Server has shut down")
         else:
-            print("Server could not be closed")
+            logging.info("Server could not be closed")

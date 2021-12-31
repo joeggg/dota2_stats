@@ -1,6 +1,9 @@
 """
     Setup functions
 """
+import logging
+import sys
+
 import requests
 
 
@@ -28,3 +31,13 @@ class StaticObjects:
             params={"key": cls.KEY, "language": "en-GB"},
         ).json()
         cls.HEROES = {hero["id"]: hero["localized_name"] for hero in hero_data["result"]["heroes"]}
+
+
+def setup_logger():
+    """Setup the logger"""
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter("[%(asctime)s]-[%(funcName)s]-[%(levelname)s]: %(message)s")
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)

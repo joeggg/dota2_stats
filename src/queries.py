@@ -2,8 +2,9 @@
     Fetching and processing match data
 """
 import asyncio
+import logging
 from datetime import datetime
-from typing import Iterator, List, Optional
+from typing import List, Optional
 
 from aiohttp import ClientError, ClientSession
 
@@ -11,6 +12,7 @@ from .setup import StaticObjects
 
 HISTORY_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v1"
 DETAILS_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1"
+PLAYER_ENDPOINT = ""
 DEFAULT_MATCHES_PER_PAGE = 20
 
 
@@ -20,17 +22,22 @@ async def async_request(
     method: str = "GET",
     attempts: int = 10,
 ) -> dict:
-    """Make an async HTTP request safely"""
+    """Make an async HTTP request to Steam safely"""
     params = params or {}
     for attempt in range(attempts):
         try:
             async with ClientSession() as session:
-                async with session.request(method, url, params=params) as resp:
+                async with session.request(
+                    method,
+                    url,
+                    params={"key": StaticObjects.KEY, **params},
+                ) as resp:
                     resp.raise_for_status()
                     data = await resp.json()
                     return data
         except ClientError as exc:
-            print(f"{exc}: Attempt {attempt+1} of {attempts}")
+            logging.debug(exc.headers)
+            logging.error(f"{exc}: Attempt {attempt+1} of {attempts}")
             await asyncio.sleep(0.2)
             continue
 
@@ -40,14 +47,11 @@ async def async_request(
 async def get_match_data(match_id: str, account_id: str) -> dict:
     data = await async_request(
         DETAILS_ENDPOINT,
-        params={
-            "key": StaticObjects.KEY,
-            "match_id": match_id,
-        },
+        params={"match_id": match_id},
     )
     match = data.get("result")
     if not match:
-        print("No match in response")
+        logging.info("No match in response")
         return
     # Get player info (like what team is the player on)
     player_details = extract_player_details(match["players"], account_id)
@@ -93,24 +97,28 @@ def get_match_length(duration_s: int) -> str:
     return match_length
 
 
-async def get_matches(
-    account_id: str,
-    num_matches: int = DEFAULT_MATCHES_PER_PAGE,
-) -> Iterator[dict]:
+async def get_player(account_id: str) -> dict:
+    """Get player summary info"""
+    data = await async_request(
+        PLAYER_ENDPOINT,
+        params={"account_id": account_id},
+    )
+
+
+async def get_matches(account_id: str, num_matches: int = DEFAULT_MATCHES_PER_PAGE) -> List[dict]:
     data = await async_request(
         HISTORY_ENDPOINT,
         params={
-            "key": StaticObjects.KEY,
             "account_id": account_id,
             "matches_requested": num_matches,
         },
     )
     if not data:
-        print("No data returned")
+        logging.info("No data returned")
         return
     match_list = data.get("result", {}).get("matches")
     if not match_list:
-        print("Match list in invalid format")
+        logging.info("Match list in invalid format")
         return
 
     futures = []

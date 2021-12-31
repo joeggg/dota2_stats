@@ -2,6 +2,7 @@
     Handler functions for the different routes
 """
 import functools
+import logging
 import time
 
 from flask import make_response
@@ -18,7 +19,7 @@ def format_response(func):
         data = {"results": data}
         resp = make_response(data)
         resp.headers["Access-Control-Allow-Origin"] = "*"
-        print(resp)
+        logging.info(resp)
         return resp
 
     return wrapper
@@ -26,7 +27,7 @@ def format_response(func):
 
 @format_response
 async def status():
-    print("Received status command")
+    logging.info("Received status command")
     return "Hello world!"
 
 
@@ -36,8 +37,8 @@ async def matches(account_id: str) -> str:
     if not account_id:
         return "Invalid account ID"
 
-    print(f"Fetching match data for account {account_id}")
+    logging.info(f"Fetching match data for account {account_id}")
     start = time.perf_counter()
     matches = await queries.get_matches(account_id)
-    print(f"Time taken: {time.perf_counter() - start}s")
+    logging.info(f"Time taken: {time.perf_counter() - start}s")
     return matches

@@ -4,11 +4,12 @@
 import time
 
 from .server import ServerThread
-from .setup import StaticObjects
+from .setup import setup_logger, StaticObjects
 
 
 def main():
     StaticObjects.setup()
+    setup_logger()
     server = ServerThread()
     server.start()
 
