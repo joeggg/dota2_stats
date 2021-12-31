@@ -12,7 +12,7 @@ from .setup import StaticObjects
 
 HISTORY_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v1"
 DETAILS_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1"
-PLAYER_ENDPOINT = ""
+PLAYER_ENDPOINT = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002"
 DEFAULT_MATCHES_PER_PAGE = 20
 
 
@@ -99,10 +99,24 @@ def get_match_length(duration_s: int) -> str:
 
 async def get_player(account_id: str) -> dict:
     """Get player summary info"""
+    # Generate 64 bit ID
+    steamid_64 = str(int(account_id) + 76561197960265728)
     data = await async_request(
         PLAYER_ENDPOINT,
-        params={"account_id": account_id},
+        params={"steamids": steamid_64},
     )
+    try:
+        player = data["response"]["players"][0]
+    except (KeyError, IndexError) as exc:
+        logging.error("Player info in invalid format: %s", exc)
+        return
+
+    created_at = datetime.fromtimestamp(float(player["timecreated"]))
+    return {
+        "name": player["personaname"],
+        "avatar": player["avatarfull"],
+        "created_at": created_at.isoformat().replace("T", " "),
+    }
 
 
 async def get_matches(account_id: str, num_matches: int = DEFAULT_MATCHES_PER_PAGE) -> List[dict]:
@@ -114,11 +128,12 @@ async def get_matches(account_id: str, num_matches: int = DEFAULT_MATCHES_PER_PA
         },
     )
     if not data:
-        logging.info("No data returned")
+        logging.error("No match list data returned")
         return
+
     match_list = data.get("result", {}).get("matches")
     if not match_list:
-        logging.info("Match list in invalid format")
+        logging.error("Match list in invalid format")
         return
 
     futures = []

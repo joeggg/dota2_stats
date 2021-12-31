@@ -4,12 +4,39 @@ import { useParams } from 'react-router-dom';
 function MatchList() {
     const params = useParams();
     const [matchData, setMatches] = useState([]);
-    const accountId = params.accountId;
-    const ip = '94.11.9.194';
-    // const ip = '127.0.0.1';
+    const [playerData, setPlayer] = useState([]);
 
+    const accountId = params.accountId;
+    const url = 'http://94.11.9.194:5656';
+    // const ip = 'http://127.0.0.1:5656';
+
+    /**
+     *  Player info effect
+     */
     useEffect(() => {
-        fetch(`http://${ip}:5656/matches/${accountId}`).then((res) => {
+        fetch(`${url}/player/${accountId}`).then((res) => {
+            res.text().then((text) => {
+                const player = JSON.parse(text).results;
+                setPlayer(
+                    <div className="playerData">
+                        <img
+                            src={player.avatar}
+                            alt="avatar"
+                            className="avatar"
+                        />
+                        <p>{player.name}</p>
+                        <h4>Member since {player.created_at}</h4>
+                    </div>
+                );
+            });
+        });
+    }, []);
+
+    /**
+     *  Match list effect
+     */
+    useEffect(() => {
+        fetch(`${url}/matches/${accountId}`).then((res) => {
             res.text().then((text) => {
                 const matches = JSON.parse(text).results;
                 const data = matches.map((match) => {
@@ -50,7 +77,8 @@ function MatchList() {
 
     return (
         <div className="Page">
-            <p>
+            {playerData}
+            <p className="matches_title">
                 Matches:
                 <br />
             </p>

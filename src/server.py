@@ -18,6 +18,7 @@ class ServerThread(threading.Thread):
         super().__init__(*args, **kwargs)
         self.app.add_url_rule("/status", view_func=routes.status)
         self.app.add_url_rule("/matches/<account_id>", view_func=routes.matches)
+        self.app.add_url_rule("/player/<account_id>", view_func=routes.player)
 
     def run(self) -> None:
         logging.info("Starting server")

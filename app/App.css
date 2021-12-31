@@ -15,7 +15,6 @@ p {
     font-size: 20px;
     font-weight: 700;
     text-align: left;
-    padding: 10px 50px;
 }
 
 .App {
@@ -30,6 +29,10 @@ p {
     display: inline;
 }
 
+.avatar {
+    width: 10%;
+}
+
 .Link {
     color: rgb(143, 143, 143);
     background-color: #414853;
@@ -42,6 +45,16 @@ a {
 
 .Page {
     background-color: #282c34;
+}
+
+.playerData {
+    color: rgb(143, 143, 143);
+    text-align: left;
+    padding-left: 50px;
+}
+
+.matches_title {
+    padding-left: 50px;
 }
 
 .title {
