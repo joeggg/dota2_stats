@@ -18,18 +18,23 @@ async def async_request(
     url: str,
     params: Optional[dict] = None,
     method: str = "GET",
+    attempts: int = 10,
 ) -> dict:
     """Make an async HTTP request safely"""
     params = params or {}
-    try:
-        async with ClientSession() as session:
-            async with session.request(method, url, params=params) as resp:
-                resp.raise_for_status()
-                data = await resp.json()
-                return data
-    except ClientError as exc:
-        print(exc)
-        return {}
+    for attempt in range(attempts):
+        try:
+            async with ClientSession() as session:
+                async with session.request(method, url, params=params) as resp:
+                    resp.raise_for_status()
+                    data = await resp.json()
+                    return data
+        except ClientError as exc:
+            print(f"{exc}: Attempt {attempt+1} of {attempts}")
+            await asyncio.sleep(0.2)
+            continue
+
+    return {}
 
 
 async def get_match_data(match_id: str, account_id: str) -> dict:
