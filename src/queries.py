@@ -11,6 +11,7 @@ from .setup import StaticObjects
 
 HISTORY_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v1"
 DETAILS_ENDPOINT = "http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1"
+DEFAULT_MATCHES_PER_PAGE = 20
 
 
 async def async_request(
@@ -79,7 +80,7 @@ def get_match_length(duration_s: int) -> str:
     hours = (duration_s - duration_s % 3600) / 3600
     mins = ((duration_s - duration_s % 60) / 60) - hours * 60
     seconds = duration_s - mins * 60 - hours * 3600
-    match_length = str(int(seconds))
+    match_length = f"{int(seconds)}" if seconds > 9 else f"0{int(seconds)}"
     if mins:
         match_length = f"{int(mins)}:{match_length}"
     if hours:
@@ -87,7 +88,10 @@ def get_match_length(duration_s: int) -> str:
     return match_length
 
 
-async def get_matches(account_id: str, num_matches: int = 5) -> Iterator[dict]:
+async def get_matches(
+    account_id: str,
+    num_matches: int = DEFAULT_MATCHES_PER_PAGE,
+) -> Iterator[dict]:
     data = await async_request(
         HISTORY_ENDPOINT,
         params={
