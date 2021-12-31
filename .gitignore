@@ -1,5 +1,6 @@
-__pycache__/
-node_modules/
-venv/
-secret/
-build/
+__pycache__
+node_modules
+venv
+secret
+build
+.vscode

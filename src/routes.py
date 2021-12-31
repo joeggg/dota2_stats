@@ -8,7 +8,7 @@ from typing import List
 
 from flask import make_response
 
-from . import queries
+from .dota2 import queries
 
 
 def format_response(func):
