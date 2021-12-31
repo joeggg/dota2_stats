@@ -5,8 +5,8 @@ function MatchList() {
     const params = useParams();
     const [matchData, setMatches] = useState([]);
     const accountId = params.accountId;
-    // const ip = '94.11.9.194';
-    const ip = '127.0.0.1';
+    const ip = '94.11.9.194';
+    // const ip = '127.0.0.1';
 
     useEffect(() => {
         fetch(`http://${ip}:5656/matches/${accountId}`).then((res) => {
@@ -44,7 +44,6 @@ function MatchList() {
                         <tbody>{data}</tbody>
                     </table>
                 );
-                console.log(matches);
             });
         });
     }, []);

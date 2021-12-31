@@ -8,7 +8,6 @@ function Main() {
         Alexi: 102949470,
     };
     const links = Object.entries(idList).map(([name, id]) => {
-        console.log(name, id);
         return (
             <h2 key={id} className="Link">
                 <Link to={`${id}`}>
