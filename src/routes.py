@@ -1,34 +1,59 @@
 """
     Handler functions for the different routes
 """
-import json
+import functools
+import logging
 import time
+from typing import List
 
-from flask import render_template
+from flask import make_response
 
 from . import queries
 
 
-def status():
+def format_response(func):
+    """Adds required headers to response and times the function"""
+
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        data = await func(*args, **kwargs)
+        end = time.perf_counter()
+        logging.info("Time taken for %s: %ss", func.__name__, end - start)
+
+        data = {"results": data}
+        resp = make_response(data)
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        logging.info(resp)
+
+        return resp
+
+    return wrapper
+
+
+@format_response
+async def status():
+    logging.info("Received status command")
     return "Hello world!"
 
 
-def test_html():
-    return render_template("index.html")
-
-
-def matches(account_id: str) -> str:
-    """Return formatted match data to the browser"""
+@format_response
+async def matches(account_id: str) -> List[dict]:
+    """Return formatted match data to the frontend"""
     if not account_id:
         return "Invalid account ID"
 
-    print(f"Fetching match data for account {account_id}")
-    start = time.perf_counter()
-    matches = queries.get_matches(account_id)
-    output = ""
-    for match in matches:
-        print(f'Got match {match["match_id"]}')
-        output += json.dumps(match, indent=2) + "\n"
-    print(f"Time taken: {time.perf_counter() - start}s")
+    logging.info(f"Fetching match data for account {account_id}")
+    matches = await queries.get_matches(account_id)
+    return matches
 
-    return output
+
+@format_response
+async def player(account_id: str) -> dict:
+    """Return formatted player data to the frontend"""
+    if not account_id:
+        return "Invalid account ID"
+
+    logging.info(f"Fetching player data for account {account_id}")
+    player = await queries.get_player(account_id)
+    return player
