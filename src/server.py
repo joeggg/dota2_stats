@@ -19,6 +19,7 @@ class ServerThread(threading.Thread):
         self.app.add_url_rule("/status", view_func=routes.status)
         self.app.add_url_rule("/matches/<account_id>", view_func=routes.matches)
         self.app.add_url_rule("/player/<account_id>", view_func=routes.player)
+        self.app.add_url_rule("/match/<match_id>", view_func=routes.match)
 
     def run(self) -> None:
         logging.info("Starting server")

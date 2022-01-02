@@ -6,6 +6,7 @@ import sys
 from typing import Dict, List
 
 import requests
+from cachetools import TTLCache
 
 
 class Credentials:
@@ -30,10 +31,11 @@ class Credentials:
 class StaticObjects:
     """Immutable objects needed for queries and data processing"""
 
+    CACHE = TTLCache(1000, 300)
     CREDENTIALS = Credentials()
-    KEY = ""
     HEROES = {}
     ITEMS = {}
+    KEY = ""
 
     @classmethod
     def setup(cls) -> None:

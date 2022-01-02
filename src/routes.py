@@ -6,7 +6,7 @@ import logging
 import time
 from typing import List
 
-from flask import make_response
+from flask import make_response, Request
 
 from .dota2 import queries
 
@@ -54,6 +54,16 @@ async def player(account_id: str) -> dict:
     if not account_id:
         return "Invalid account ID"
 
-    logging.info(f"Fetching player data for account {account_id}")
+    logging.info("Fetching player data for account %s", account_id)
     player = await queries.get_player(account_id)
     return player
+
+
+async def match(match_id: str) -> dict:
+    if not match_id:
+        return "Invalid match ID"
+    account_id = Request.args.get("id")
+
+    logging.info("Fetching match data for match %s", match_id)
+    match = await queries.get_match_data(match_id, account_id)
+    return match

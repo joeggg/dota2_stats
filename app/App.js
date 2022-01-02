@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Matches from './matches';
 import logo from './dota2.svg';
 import './App.css';
 import Main from './main';
+import Matches from './matches';
+import Scoreboard from './scoreboard';
 
 function App() {
     return (
@@ -19,7 +20,9 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="/players/:accountId" element={<Matches />} />
+                    <Route path="players/:accountId" element={<Matches />}>
+                        <Route path="match/:matchId" element={<Scoreboard />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </div>

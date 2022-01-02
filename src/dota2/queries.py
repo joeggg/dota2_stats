@@ -44,7 +44,13 @@ async def async_request(
     return {}
 
 
-async def get_match_data(match_id: str, account_id: str) -> dict:
+async def get_match_data(match_id: str, account_id: Optional[str] = None) -> dict:
+    """
+    Call API for match data and format for the UI
+    """
+    if match_id in StaticObjects.CACHE:
+        return StaticObjects.CACHE[match_id]
+
     data = await async_request(
         DETAILS_ENDPOINT,
         params={"match_id": match_id},
@@ -58,18 +64,27 @@ async def get_match_data(match_id: str, account_id: str) -> dict:
     # Get time info
     match_length = get_match_length(int(match["duration"]))
     start_time = datetime.fromtimestamp(float(match["start_time"]))
-    # Get result
-    result = "won" if player_details[account_id]["is_radiant"] == match["radiant_win"] else "lost"
+    # Get result and hero
+    if account_id:
+        result = (
+            "won" if player_details[account_id]["is_radiant"] == match["radiant_win"] else "lost"
+        )
+        hero = player_details[account_id]["hero"]
+    else:
+        result = None
+        hero = None
     # Format results
-    return {
+    match_out = {
         "start_time": start_time.isoformat().replace("T", " "),
         "length": match_length,
-        "match_id": match["match_id"],
+        "match_id": match_id,
         "result": result,
-        "hero": player_details[account_id]["hero"],
+        "hero": hero,
         "cluster": match["cluster"],
         "players": player_details,
     }
+    StaticObjects.CACHE[match_id] = match_out
+    return match_out
 
 
 def extract_player_details(players: List[dict]) -> dict:
