@@ -33,6 +33,13 @@ p {
     width: 10%;
 }
 
+.linkButton {
+    background-color: inherit;
+    color: #7196d1;
+    font-size: 15px;
+    text-align: left;
+}
+
 .Link {
     color: rgb(143, 143, 143);
     background-color: #414853;
