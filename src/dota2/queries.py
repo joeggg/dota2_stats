@@ -53,36 +53,64 @@ async def get_match_data(match_id: str, account_id: str) -> dict:
     if not match:
         logging.info("No match in response")
         return
-    # Get player info (like what team is the player on)
-    player_details = extract_player_details(match["players"], account_id)
+    # Get players info
+    player_details = extract_player_details(match["players"])
     # Get time info
     match_length = get_match_length(int(match["duration"]))
     start_time = datetime.fromtimestamp(float(match["start_time"]))
+    # Get result
+    result = "won" if player_details[account_id]["is_radiant"] == match["radiant_win"] else "lost"
     # Format results
     return {
         "start_time": start_time.isoformat().replace("T", " "),
         "length": match_length,
         "match_id": match["match_id"],
-        "result": "won" if player_details["is_radiant"] == match["radiant_win"] else "lost",
-        "hero": player_details["hero"],
+        "result": result,
+        "hero": player_details[account_id]["hero"],
         "cluster": match["cluster"],
+        "players": player_details,
     }
 
 
-def extract_player_details(players: List[dict], account_id: str) -> dict:
+def extract_player_details(players: List[dict]) -> dict:
     """Return required player info from the match player list"""
-    is_radiant = None
-    hero = None
+    results = {}
     for player in players:
-        if player["account_id"] == int(account_id):
-            is_radiant = player["player_slot"] < 5
-            hero = StaticObjects.HEROES[player["hero_id"]]
-            break
+        if player["player_slot"] < 5:
+            is_radiant = True
+            slot = player["player_slot"]
+        else:
+            is_radiant = False
+            slot = player["player_slot"] - 128 + 5
 
-    return {
-        "is_radiant": is_radiant,
-        "hero": hero,
-    }
+        items = [StaticObjects.ITEMS[player[f"item_{i}"]] for i in range(6)]
+        backpack = [StaticObjects.ITEMS[player[f"backpack_{i}"]] for i in range(3)]
+
+        results[str(player["account_id"])] = {
+            "slot": slot,
+            "is_radiant": is_radiant,
+            "hero": StaticObjects.HEROES[player["hero_id"]],
+            "level": player["level"],
+            "kills": player["kills"],
+            "deaths": player["deaths"],
+            "assists": player["assists"],
+            "cs": player["last_hits"],
+            "denies": player["denies"],
+            "gpm": player["gold_per_min"],
+            "xpm": player["xp_per_min"],
+            "net_worth": player["net_worth"],
+            "aghs_scepter": player["aghanims_scepter"] == 1,
+            "aghs_shard": player["aghanims_shard"] == 1,
+            "moonshard": player["moonshard"] == 1,
+            "hero_damage": player["hero_damage"],
+            "tower_damage": player["tower_damage"],
+            "healing": player["hero_healing"],
+            "items": items,
+            "backpack": backpack,
+            "neutral": StaticObjects.ITEMS[player["item_neutral"]],
+        }
+
+    return results
 
 
 def get_match_length(duration_s: int) -> str:

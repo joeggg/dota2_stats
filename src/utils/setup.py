@@ -39,7 +39,7 @@ class StaticObjects:
     def setup(cls) -> None:
         """Set up all required objects"""
         cls.load_api_key()
-        cls.load_credentials()
+        # cls.load_credentials()
         cls.load_hero_data()
         cls.load_item_data()
 
@@ -74,6 +74,7 @@ class StaticObjects:
             }
             for item in item_data["result"]["items"]
         }
+        cls.ITEMS[0] = None
 
 
 def setup_logger() -> None:

@@ -12,17 +12,17 @@ def main():
     StaticObjects.setup()
     setup_logger()
     server = ServerThread()
-    dota2 = Dota2Thread()
-    dota2.start()
-    # server.start()
+    # dota2 = Dota2Thread()
+    # dota2.start()
+    server.start()
 
-    # while True:
-    #     try:
-    #         time.sleep(0.1)
-    #     except KeyboardInterrupt:
-    #         break
+    while True:
+        try:
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            break
 
-    # server.shutdown()
+    server.shutdown()
 
 
 main()
