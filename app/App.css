@@ -33,7 +33,11 @@ p {
     width: 10%;
 }
 
-.linkButton {
+.BackButton {
+    color: #7196d1;
+}
+
+.LinkButton {
     background-color: inherit;
     color: #7196d1;
     font-size: 15px;

@@ -1,27 +1,14 @@
 import { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Matches() {
     const params = useParams();
     const [playerSummary, setPlayerSummary] = useState(<div></div>);
-    const [, setMatchList] = useState(<div></div>);
-    const [matchScoreboard, setMatchScoreboard] = useState(<div></div>);
-    const [currentDisplay, setCurrentDisplay] = useState(<div></div>);
+    const [matchList, setMatchList] = useState(<div></div>);
 
     const accountId = params.accountId;
     const url = 'http://94.11.9.194:5656';
     // const ip = 'http://127.0.0.1:5656';
-
-    /**
-     *  Switching panel effect
-     */
-    useEffect(() => {
-        ReactDOM.render(
-            currentDisplay,
-            document.getElementById('currentDisplay')
-        );
-    });
 
     /**
      *  Player info effect
@@ -57,14 +44,12 @@ function Matches() {
                     return (
                         <tr key={match.match_id}>
                             <td>
-                                <button
-                                    className="linkButton"
-                                    onClick={() => {
-                                        setCurrentDisplay(matchScoreboard);
-                                    }}
+                                <Link
+                                    to={`match/${match.match_id}`}
+                                    className="MatchLink"
                                 >
                                     {match.hero}
-                                </button>
+                                </Link>
                             </td>
                             <td
                                 style={{
@@ -74,15 +59,34 @@ function Matches() {
                                             : 'darkred',
                                 }}
                             >
-                                {match.result}
+                                <Link
+                                    to={`match/${match.match_id}`}
+                                    className="MatchLink"
+                                >
+                                    {match.result}
+                                </Link>
                             </td>
-                            <td>{match.length}</td>
-                            <td>{match.start_time}</td>
+                            <td>
+                                <Link
+                                    to={`match/${match.match_id}`}
+                                    className="MatchLink"
+                                >
+                                    {match.length}
+                                </Link>
+                            </td>
+                            <td>
+                                <Link
+                                    to={`match/${match.match_id}`}
+                                    className="MatchLink"
+                                >
+                                    {match.start_time}
+                                </Link>
+                            </td>
                         </tr>
                     );
                 });
-                // Add the table headings
-                const matchListData = (
+                // Add the table headings and set the state
+                setMatchList(
                     <div>
                         <table cellSpacing={0} className="MatchList">
                             <thead>
@@ -97,16 +101,6 @@ function Matches() {
                         </table>
                     </div>
                 );
-                // Create the scoreboard element
-                const matchScoreboardData = (
-                    <table cellSpacing={0} className="MatchData">
-                        Match scoreboard here {getMatchScoreboard(matches[0])}
-                    </table>
-                );
-                // Set the match list/scoreboard state and current display defaults to match list
-                setMatchList(matchListData);
-                setMatchScoreboard(matchScoreboardData);
-                setCurrentDisplay(matchListData);
             });
         });
     }, []);
@@ -118,28 +112,9 @@ function Matches() {
                 Matches:
                 <br />
             </p>
-            <div id="currentDisplay"></div>
-            <a
-                className="App-link"
-                href="https://dota2.com"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Dota 2 site
-            </a>
+            {matchList}
         </div>
     );
-}
-
-/**
- *  Takes a match data object and returns the scoreboard as a
- *  JSX element
- *
- * @param {Object} match
- * @returns {JSX.Element}
- */
-function getMatchScoreboard(match) {
-    return <div></div>;
 }
 
 export default Matches;

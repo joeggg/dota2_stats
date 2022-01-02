@@ -19,7 +19,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path=":accountId" element={<Matches />} />
+                    <Route path="/players/:accountId" element={<Matches />} />
                 </Routes>
             </BrowserRouter>
         </div>
