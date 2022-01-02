@@ -49,8 +49,10 @@ async def get_match_data(match_id: str, account_id: Optional[str] = None) -> dic
     Call API for match data and format for the UI
     """
     if match_id in StaticObjects.CACHE:
+        logging.info("Found cached match")
         return StaticObjects.CACHE[match_id]
-
+        
+    logging.info("Querying for match")
     data = await async_request(
         DETAILS_ENDPOINT,
         params={"match_id": match_id},

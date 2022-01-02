@@ -20,9 +20,11 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="players/:accountId" element={<Matches />}>
-                        <Route path="match/:matchId" element={<Scoreboard />} />
-                    </Route>
+                    <Route path="players/:accountId" element={<Matches />} />
+                    <Route
+                        path="players/:accountId/match/:matchId"
+                        element={<Scoreboard />}
+                    />
                 </Routes>
             </BrowserRouter>
         </div>
