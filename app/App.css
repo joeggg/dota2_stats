@@ -46,6 +46,12 @@ p {
     background-color: #282c34;
     color: rgb(143, 143, 143);
 }
+.MatchesRow {
+    font-weight: 600;
+}
+.MatchesHeader {
+    font-weight: 800;
+}
 
 .ScoreRow,
 .ScoreHeader {
@@ -137,7 +143,7 @@ a {
         display: inherit;
     }
     .avatar {
-        width: 10%;
+        width: 5%;
     }
 }
 

@@ -103,17 +103,12 @@ function Scoreboard() {
 
     return (
         <div className="Page">
-            <br />
             <button className="BackButton">
                 <Link to={`/players/${accountId}`}>
                     <p>Back to matches</p>
                 </Link>
             </button>
-            <br />
-            <p className="MatchesTitle">
-                Match scoreboard:
-                <br />
-            </p>
+            <p className="MatchesTitle">Match scoreboard:</p>
             <p
                 className="ResultsTitle"
                 style={{

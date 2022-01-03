@@ -9,7 +9,7 @@ from typing import List, Optional
 
 from . import consts
 from ..utils.setup import StaticObjects
-from ..utils.tools import async_request
+from ..utils.tools import async_request, format_date
 
 
 async def get_player(account_id: str) -> dict:
@@ -31,10 +31,11 @@ async def get_player(account_id: str) -> dict:
         return {}
 
     created_at = datetime.fromtimestamp(float(player["timecreated"]))
+    date, _ = format_date(created_at)
     player_out = {
         "name": player["personaname"],
         "avatar": player["avatarfull"],
-        "created_at": created_at.isoformat().split("T")[0],
+        "created_at": date,
     }
     StaticObjects.CACHE[account_id] = player_out
     return player_out
@@ -118,11 +119,12 @@ async def fetch_match_data(match_id: str) -> dict:
     # Get time info
     match_length = extract_match_length(int(match["duration"]))
     start_time = datetime.fromtimestamp(float(match["start_time"]))
+    date, time = format_date(start_time)
 
     # Format results
     match_out = {
         "match_id": match_id,
-        "start_time": start_time.isoformat().replace("T", " "),
+        "start_time": f"{date} {time}",
         "length": match_length,
         "radiant_win": match.get("radiant_win"),
         "winner": "Radiant" if match.get("radiant_win") else "Dire",

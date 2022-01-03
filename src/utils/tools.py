@@ -5,7 +5,8 @@ import asyncio
 import functools
 import logging
 import time
-from typing import Optional
+from datetime import datetime
+from typing import Optional, Tuple
 
 from aiohttp import ClientError, ClientSession
 from flask import make_response
@@ -59,3 +60,10 @@ def format_server_response(func):
         return resp
 
     return wrapper
+
+
+def format_date(datetime: datetime) -> Tuple[str, str]:
+    """Returns formatted date and time separately"""
+    date, time = datetime.isoformat().split("T")
+    year, month, day = date.split("-")
+    return f"{day}/{month}/{year}", time
