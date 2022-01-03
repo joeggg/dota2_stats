@@ -49,10 +49,10 @@ async def get_match_data(match_id: str, account_id: Optional[str] = None) -> dic
     Call API for match data and format for the UI
     """
     if match_id in StaticObjects.CACHE:
-        logging.info("Found cached match")
+        logging.debug("Found cached match")
         return StaticObjects.CACHE[match_id]
-        
-    logging.info("Querying for match")
+
+    logging.debug("Querying for match")
     data = await async_request(
         DETAILS_ENDPOINT,
         params={"match_id": match_id},
@@ -82,7 +82,7 @@ async def get_match_data(match_id: str, account_id: Optional[str] = None) -> dic
         "match_id": match_id,
         "result": result,
         "hero": hero,
-        "cluster": match["cluster"],
+        "cluster": match.get("cluster"),
         "players": player_details,
     }
     StaticObjects.CACHE[match_id] = match_out
@@ -92,6 +92,7 @@ async def get_match_data(match_id: str, account_id: Optional[str] = None) -> dic
 def extract_player_details(players: List[dict]) -> dict:
     """Return required player info from the match player list"""
     results = {}
+    spare_id = 0
     for player in players:
         if player["player_slot"] < 5:
             is_radiant = True
@@ -100,31 +101,37 @@ def extract_player_details(players: List[dict]) -> dict:
             is_radiant = False
             slot = player["player_slot"] - 128 + 5
 
-        items = [StaticObjects.ITEMS[player[f"item_{i}"]] for i in range(6)]
-        backpack = [StaticObjects.ITEMS[player[f"backpack_{i}"]] for i in range(3)]
+        items = [StaticObjects.ITEMS[player.get(f"item_{i}", 0)] for i in range(6)]
+        backpack = [StaticObjects.ITEMS[player.get(f"backpack_{i}", 0)] for i in range(3)]
 
-        results[str(player["account_id"])] = {
+        # Handle anonymous accounts
+        account_id = player["account_id"]
+        if account_id == 4294967295:  # anonymous ID
+            account_id = spare_id
+            spare_id += 1
+
+        results[str(account_id)] = {
             "slot": slot,
             "is_radiant": is_radiant,
-            "hero": StaticObjects.HEROES[player["hero_id"]],
-            "level": player["level"],
-            "kills": player["kills"],
-            "deaths": player["deaths"],
-            "assists": player["assists"],
-            "cs": player["last_hits"],
-            "denies": player["denies"],
-            "gpm": player["gold_per_min"],
-            "xpm": player["xp_per_min"],
-            "net_worth": player["net_worth"],
-            "aghs_scepter": player["aghanims_scepter"] == 1,
-            "aghs_shard": player["aghanims_shard"] == 1,
-            "moonshard": player["moonshard"] == 1,
-            "hero_damage": player["hero_damage"],
-            "tower_damage": player["tower_damage"],
-            "healing": player["hero_healing"],
+            "hero": StaticObjects.HEROES[player.get("hero_id", 0)],
+            "level": player.get("level"),
+            "kills": player.get("kills"),
+            "deaths": player.get("deaths"),
+            "assists": player.get("assists"),
+            "cs": player.get("last_hits"),
+            "denies": player.get("denies"),
+            "gpm": player.get("gold_per_min"),
+            "xpm": player.get("xp_per_min"),
+            "net_worth": player.get("net_worth"),
+            "aghs_scepter": player.get("aghanims_scepter") == 1,
+            "aghs_shard": player.get("aghanims_shard") == 1,
+            "moonshard": player.get("moonshard") == 1,
+            "hero_damage": player.get("hero_damage"),
+            "tower_damage": player.get("tower_damage"),
+            "healing": player.get("hero_healing"),
             "items": items,
             "backpack": backpack,
-            "neutral": StaticObjects.ITEMS[player["item_neutral"]],
+            "neutral": StaticObjects.ITEMS[player.get("item_neutral", 0)],
         }
 
     return results
@@ -184,7 +191,7 @@ async def get_matches(account_id: str, num_matches: int = DEFAULT_MATCHES_PER_PA
 
     futures = []
     for match in match_list:
-        match_id = match["match_id"]
+        match_id = str(match["match_id"])
         futures.append(get_match_data(match_id, account_id))
     results = await asyncio.gather(*futures)
 

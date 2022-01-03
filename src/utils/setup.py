@@ -62,6 +62,7 @@ class StaticObjects:
             params={"key": cls.KEY, "language": "en-GB"},
         ).json()
         cls.HEROES = {hero["id"]: hero["localized_name"] for hero in hero_data["result"]["heroes"]}
+        cls.HEROES[0] = None
 
     @classmethod
     def load_item_data(cls) -> None:

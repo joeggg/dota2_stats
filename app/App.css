@@ -35,6 +35,9 @@ p {
 
 .BackButton {
     color: #7196d1;
+    background-color: #2d323a;
+    width: 100px;
+    padding-left: 0px;
 }
 
 .LinkButton {
@@ -47,6 +50,12 @@ p {
 .Link {
     color: rgb(143, 143, 143);
     background-color: #414853;
+}
+
+.ScoreboardHeader {
+    text-align: left;
+    font-size: 20px;
+    padding: 0px;
 }
 
 a {
