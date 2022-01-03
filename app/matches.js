@@ -18,14 +18,18 @@ function Matches() {
             res.text().then((text) => {
                 const player = JSON.parse(text).results;
                 setPlayerSummary(
-                    <div className="playerData">
+                    <div className="PlayerData">
                         <img
                             src={player.avatar}
                             alt="avatar"
                             className="avatar"
                         />
-                        <p>{player.name}</p>
-                        <h4>Member since {player.created_at}</h4>
+                        <span className="PlayerName">
+                            {player.name} <br></br>
+                            <h4 className="PlayerDetails">
+                                Member since {player.created_at}
+                            </h4>
+                        </span>
                     </div>
                 );
             });
@@ -43,7 +47,7 @@ function Matches() {
                 const matchListBody = matches.map((match) => {
                     return (
                         <tr key={match.match_id}>
-                            <td>
+                            <td className="MatchesRow">
                                 <Link
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
@@ -52,6 +56,7 @@ function Matches() {
                                 </Link>
                             </td>
                             <td
+                                className="MatchesRow"
                                 style={{
                                     color:
                                         match.result === 'won'
@@ -66,7 +71,7 @@ function Matches() {
                                     {match.result}
                                 </Link>
                             </td>
-                            <td>
+                            <td className="MatchesRow">
                                 <Link
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
@@ -74,7 +79,7 @@ function Matches() {
                                     {match.length}
                                 </Link>
                             </td>
-                            <td>
+                            <td className="MatchesRow">
                                 <Link
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
@@ -91,10 +96,10 @@ function Matches() {
                         <table cellSpacing={0} className="MatchList">
                             <thead>
                                 <tr key="labels">
-                                    <th>Hero</th>
-                                    <th>Result</th>
-                                    <th>Duration</th>
-                                    <th>Time</th>
+                                    <th className="MatchesHeader">Hero</th>
+                                    <th className="MatchesHeader">Result</th>
+                                    <th className="MatchesHeader">Duration</th>
+                                    <th className="MatchesHeader">Time</th>
                                 </tr>
                             </thead>
                             <tbody>{matchListBody}</tbody>
@@ -108,8 +113,9 @@ function Matches() {
     return (
         <div className="Page">
             {playerSummary}
-            <p className="matches_title">
-                Matches:
+            <br />
+            <p className="MatchTitle">
+                Matches
                 <br />
             </p>
             {matchList}

@@ -81,9 +81,10 @@ async def get_match_data(match_id: str, account_id: Optional[str] = None) -> dic
         "length": match_length,
         "match_id": match_id,
         "result": result,
+        "winner": "Radiant" if match["radiant_win"] else "Dire",
         "hero": hero,
         "cluster": match.get("cluster"),
-        "players": player_details,
+        "players": list(player_details.values()),
     }
     StaticObjects.CACHE[match_id] = match_out
     return match_out
@@ -111,6 +112,7 @@ def extract_player_details(players: List[dict]) -> dict:
             spare_id += 1
 
         results[str(account_id)] = {
+            "id": account_id,
             "slot": slot,
             "is_radiant": is_radiant,
             "hero": StaticObjects.HEROES[player.get("hero_id", 0)],

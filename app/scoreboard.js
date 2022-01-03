@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 
 function Scoreboard() {
     const params = useParams();
+    const [matchData, setMatchData] = useState({});
     const [matchScoreboard, setMatchScoreboard] = useState(<div></div>);
 
     const accountId = params.accountId;
@@ -18,44 +19,80 @@ function Scoreboard() {
             res.text().then((text) => {
                 const match = JSON.parse(text).results;
                 // Create the scoreboard element
-                const scoreboard = Object.entries(match.players).map(
-                    ([id, player]) => {
-                        return (
-                            <tr key={id}>
-                                <td>{player.hero}</td>
-                                <td>{player.level}</td>
-                                <td>{player.kills}</td>
-                                <td>{player.deaths}</td>
-                                <td>{player.assists}</td>
-                                <td>{player.net_worth}</td>
-                                <td>{player.gpm}</td>
-                                <td>{player.xpm}</td>
-                                <td>{player.hero_damage}</td>
-                                <td>{player.tower_damage}</td>
-                                <td>{player.healing}</td>
-                            </tr>
-                        );
+                const scoreboard = match.players.map((player) => {
+                    const name = 'ScoreRow';
+                    let colour = null;
+                    let id = player.id;
+                    if (player.slot === 5 || player.slot === 0) {
+                        id = 'GapRow';
                     }
-                );
+                    if (player.slot < 5) {
+                        colour = 'darkgreen';
+                    } else {
+                        colour = 'darkred';
+                    }
+                    return (
+                        <tr key={player.id}>
+                            <td
+                                className={name}
+                                id={id}
+                                style={{ color: colour }}
+                            >
+                                {player.hero}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.level}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.kills}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.deaths}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.assists}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.net_worth}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.gpm}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.xpm}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.hero_damage}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.tower_damage}
+                            </td>
+                            <td className={name} id={id}>
+                                {player.healing}
+                            </td>
+                        </tr>
+                    );
+                });
                 // Set the match scoreboard state and current display defaults to match list
+                setMatchData(match);
                 setMatchScoreboard(
-                    <table cellSpacing={0} className="MatchData">
-                        <thead className="ScoreboardHeader">
+                    <table cellSpacing={0} className="Matchdata">
+                        <thead>
                             <tr>
-                                <th>Hero</th>
-                                <th>Level</th>
-                                <th>Kills</th>
-                                <th>Deaths</th>
-                                <th>Assists</th>
-                                <th>Net worth</th>
-                                <th>GPM</th>
-                                <th>XPM</th>
-                                <th>Hero damage</th>
-                                <th>Tower damage</th>
-                                <th>Hero healing</th>
+                                <th className="ScoreHeader">Hero</th>
+                                <th className="ScoreHeader">Level</th>
+                                <th className="ScoreHeader">Kills</th>
+                                <th className="ScoreHeader">Deaths</th>
+                                <th className="ScoreHeader">Assists</th>
+                                <th className="ScoreHeader">Net worth</th>
+                                <th className="ScoreHeader">GPM</th>
+                                <th className="ScoreHeader">XPM</th>
+                                <th className="ScoreHeader">Hero damage</th>
+                                <th className="ScoreHeader">Tower damage</th>
+                                <th className="ScoreHeader">Hero healing</th>
                             </tr>
                         </thead>
-                        <tbody>{scoreboard}</tbody>
+                        {scoreboard}
                     </table>
                 );
             });
@@ -64,12 +101,24 @@ function Scoreboard() {
 
     return (
         <div className="Page">
+            <br />
             <button className="BackButton">
-                <Link to={`/players/${accountId}`}>Back to matches</Link>
+                <Link to={`/players/${accountId}`}>
+                    <p>Back to matches</p>
+                </Link>
             </button>
-            <p className="matches_title">
+            <br />
+            <p className="MatchTitle">
                 Match scoreboard:
                 <br />
+            </p>
+            <p
+                className="Result"
+                style={{
+                    color: matchData.winner === 'Radiant' ? 'green' : 'red',
+                }}
+            >
+                {matchData.winner} win!
             </p>
             {matchScoreboard}
         </div>
