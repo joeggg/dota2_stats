@@ -14,7 +14,6 @@
 .ScoreHeader {
     text-align: left;
     font-size: 20px;
-    font-weight: 600;
     padding: 2px 15px;
     line-height: 30px;
     border-right: 1px solid #0e0e0f;
@@ -22,6 +21,12 @@
     border-collapse: collapse;
     background-color: #282c34;
     color: rgb(143, 143, 143);
+}
+.ScoreRow {
+    font-weight: 600;
+}
+.ScoreHeader {
+    font-weight: 800;
 }
 #GapRow {
     border-top: 30px solid #444a57;
