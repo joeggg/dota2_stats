@@ -1,3 +1,40 @@
+/* General stuff */
+
+.App {
+    text-align: center;
+    background-color: #2d323a;
+}
+
+.Page {
+    background-color: #282c34;
+}
+
+p {
+    color: rgb(103, 112, 119);
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* Various titles on pages */
+
+.MatchesTitle {
+    width: 300px;
+    padding-left: 50px;
+    color: #295579;
+    font-size: 30px;
+    border-width: 5px;
+    border-color: #253644;
+    border-style: solid;
+}
+
+.ResultsTitle {
+    padding-left: 100px;
+    font-size: 23px;
+}
+
+/* Tables */
+
 .MatchesRow,
 .MatchesHeader {
     text-align: left;
@@ -32,40 +69,7 @@
     border-top: 30px solid #444a57;
 }
 
-r {
-    padding-left: 50px;
-    text-align: left;
-    font-size: 20px;
-    line-height: 30px;
-    border-bottom: 1px solid #444a57;
-    border-collapse: collapse;
-    background-color: #282c34;
-    color: rgb(143, 143, 143);
-}
-
-p {
-    color: rgb(103, 112, 119);
-    font-size: 20px;
-    font-weight: 700;
-    text-align: left;
-}
-
-.App {
-    text-align: center;
-    background-color: #2d323a;
-}
-
-.App-logo {
-    height: 10vmin;
-    pointer-events: none;
-    padding: 0px 30px;
-    display: inline;
-}
-
-.avatar {
-    width: 10%;
-    vertical-align: middle;
-}
+/* Buttons and links */
 
 .BackButton {
     display: block;
@@ -94,50 +98,50 @@ a {
     text-decoration: none;
 }
 
-.Page {
-    background-color: #282c34;
-}
+/* Player summary on match list screen */
 
 .PlayerData {
     color: rgb(143, 143, 143);
     text-align: left;
-    padding-left: 50px;
+    padding-left: 40px;
+    padding-right: 20px;
+    display: inline-flex;
+}
+
+.avatar {
+    border-style: double;
+    border-width: 3px;
+    border-color: rgb(71, 71, 71);
+    vertical-align: middle;
+    width: 20%;
+    height: 20%;
 }
 
 .PlayerName {
-    font-size: 25px;
-    font-weight: 500;
-    color: #6c768a;
-    padding-left: 10px;
-    display: inline-block;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 45px;
+    color: #5b719e;
+    padding-left: 20px;
 }
 
 .PlayerDetails {
-    display: inline;
-    color: rgb(96, 99, 102);
-    font-size: 20px;
+    color: rgba(232, 236, 243, 0.445);
+    font-size: 18px;
+    text-align: left;
+    padding-left: 40px;
 }
 
-.MatchTitle {
-    width: 300px;
-    padding-left: 50px;
-    color: #295579;
-    font-size: 30px;
-    border-width: 5px;
-    border-color: #253644;
-    border-style: solid;
+@media only screen and (min-width: 768px) {
+    .PlayerData {
+        display: inherit;
+    }
+    .avatar {
+        width: 10%;
+    }
 }
 
-.Result {
-    padding-left: 100px;
-    font-size: 23px;
-}
-
-.title {
-    margin-left: 0;
-    margin-right: auto;
-    display: inline;
-}
+/* App header formatting */
 
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
@@ -158,6 +162,19 @@ a {
 
 .App-link {
     color: #61dafb;
+}
+
+.App-logo {
+    height: 10vmin;
+    pointer-events: none;
+    padding: 0px 30px;
+    display: inline;
+}
+
+.title {
+    margin-left: 0;
+    margin-right: auto;
+    display: inline;
 }
 
 @keyframes App-logo-spin {

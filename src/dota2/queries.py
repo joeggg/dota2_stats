@@ -34,7 +34,7 @@ async def get_player(account_id: str) -> dict:
     player_out = {
         "name": player["personaname"],
         "avatar": player["avatarfull"],
-        "created_at": created_at.isoformat().replace("T", " "),
+        "created_at": created_at.isoformat().split("T")[0],
     }
     StaticObjects.CACHE[account_id] = player_out
     return player_out

@@ -18,18 +18,20 @@ function Matches() {
             res.text().then((text) => {
                 const player = JSON.parse(text).results;
                 setPlayerSummary(
-                    <div className="PlayerData">
-                        <img
-                            src={player.avatar}
-                            alt="avatar"
-                            className="avatar"
-                        />
-                        <span className="PlayerName">
-                            {player.name} <br></br>
-                            <h4 className="PlayerDetails">
-                                Member since {player.created_at}
-                            </h4>
-                        </span>
+                    <div>
+                        <div className="PlayerData">
+                            <img
+                                src={player.avatar}
+                                alt="avatar"
+                                className="avatar"
+                            />
+                            <span className="PlayerName">
+                                {player.name} <br></br>
+                            </span>
+                        </div>
+                        <h4 className="PlayerDetails">
+                            Member since {player.created_at}
+                        </h4>
                     </div>
                 );
             });
@@ -117,7 +119,7 @@ function Matches() {
             <br />
             {playerSummary}
             <br />
-            <p className="MatchTitle">
+            <p className="MatchesTitle">
                 Matches
                 <br />
             </p>

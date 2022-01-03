@@ -110,12 +110,12 @@ function Scoreboard() {
                 </Link>
             </button>
             <br />
-            <p className="MatchTitle">
+            <p className="MatchesTitle">
                 Match scoreboard:
                 <br />
             </p>
             <p
-                className="Result"
+                className="ResultsTitle"
                 style={{
                     color: matchData.winner === 'Radiant' ? 'green' : 'red',
                 }}
