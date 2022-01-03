@@ -16,6 +16,7 @@ class ServerThread(threading.Thread):
         self.app = Flask("dota2_stats")
         self.server: BaseWSGIServer
         super().__init__(*args, **kwargs)
+        # Route definitions
         self.app.add_url_rule("/status", view_func=routes.status)
         self.app.add_url_rule("/matches/<account_id>", view_func=routes.matches)
         self.app.add_url_rule("/player/<account_id>", view_func=routes.player)

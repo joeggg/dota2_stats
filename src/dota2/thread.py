@@ -1,5 +1,5 @@
 """
-    Interface to the Dota 2 game coordinator
+    Interface to the Dota 2 game coordinator for downloading replays
 """
 import threading
 

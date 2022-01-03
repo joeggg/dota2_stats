@@ -3,7 +3,7 @@
 """
 import time
 
-from .dota2.thread import Dota2Thread
+from .dota2 import Dota2Thread
 from .server import ServerThread
 from .utils.setup import setup_logger, StaticObjects
 

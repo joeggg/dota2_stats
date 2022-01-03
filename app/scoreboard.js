@@ -17,7 +17,9 @@ function Scoreboard() {
     useEffect(() => {
         fetch(`${url}/match/${matchId}?id=${accountId}`).then((res) => {
             res.text().then((text) => {
-                const match = JSON.parse(text).results;
+                const matchObj = JSON.parse(text).results;
+                const match = matchObj.match;
+                // const PlayerDetails = matchObj.player;
                 // Create the scoreboard element
                 const scoreboard = match.players.map((player) => {
                     const name = 'ScoreRow';
@@ -92,7 +94,7 @@ function Scoreboard() {
                                 <th className="ScoreHeader">Hero healing</th>
                             </tr>
                         </thead>
-                        {scoreboard}
+                        <tbody>{scoreboard}</tbody>
                     </table>
                 );
             });

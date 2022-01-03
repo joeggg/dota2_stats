@@ -44,7 +44,9 @@ function Matches() {
             res.text().then((text) => {
                 const matches = JSON.parse(text).results;
                 // Create the match history element
-                const matchListBody = matches.map((match) => {
+                const matchListBody = matches.map((matchData) => {
+                    const match = matchData.match;
+                    const player = matchData.player;
                     return (
                         <tr key={match.match_id}>
                             <td className="MatchesRow">
@@ -52,14 +54,14 @@ function Matches() {
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {match.hero}
+                                    {player.hero}
                                 </Link>
                             </td>
                             <td
                                 className="MatchesRow"
                                 style={{
                                     color:
-                                        match.result === 'won'
+                                        player.result === 'won'
                                             ? 'darkgreen'
                                             : 'darkred',
                                 }}
@@ -68,7 +70,7 @@ function Matches() {
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {match.result}
+                                    {player.result}
                                 </Link>
                             </td>
                             <td className="MatchesRow">
