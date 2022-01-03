@@ -112,6 +112,7 @@ function Matches() {
 
     return (
         <div className="Page">
+            <br />
             {playerSummary}
             <br />
             <p className="MatchTitle">
