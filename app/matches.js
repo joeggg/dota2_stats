@@ -49,6 +49,7 @@ function Matches() {
                 const matchListBody = matches.map((matchData) => {
                     const match = matchData.match;
                     const player = matchData.player;
+                    const total = player.kills + player.deaths + player.assists;
                     return (
                         <tr key={match.match_id}>
                             <td className="MatchesRow">
@@ -84,6 +85,49 @@ function Matches() {
                                 </Link>
                             </td>
                             <td className="MatchesRow">
+                                <div className="KDA">
+                                    <div
+                                        className="Bar"
+                                        id="Kills"
+                                        style={{
+                                            width: `${
+                                                (100 * player.kills) / total
+                                            }%`,
+                                        }}
+                                    >
+                                        <p className="KDAStat">
+                                            {player.kills}
+                                        </p>
+                                    </div>
+                                    <div
+                                        className="Bar"
+                                        id="Deaths"
+                                        style={{
+                                            width: `${
+                                                (100 * player.deaths) / total
+                                            }%`,
+                                        }}
+                                    >
+                                        <p className="KDAStat">
+                                            {player.deaths}
+                                        </p>
+                                    </div>
+                                    <div
+                                        className="Bar"
+                                        id="Assists"
+                                        style={{
+                                            width: `${
+                                                (100 * player.assists) / total
+                                            }%`,
+                                        }}
+                                    >
+                                        <p className="KDAStat">
+                                            {player.assists}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td className="MatchesRow">
                                 <Link
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
@@ -103,6 +147,7 @@ function Matches() {
                                     <th className="MatchesHeader">Hero</th>
                                     <th className="MatchesHeader">Result</th>
                                     <th className="MatchesHeader">Duration</th>
+                                    <th className="MatchesHeader">K D A</th>
                                     <th className="MatchesHeader">Time</th>
                                 </tr>
                             </thead>

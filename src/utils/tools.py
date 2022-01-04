@@ -8,6 +8,7 @@ import time
 from datetime import datetime
 from typing import Optional, Tuple
 
+from requests import HTTPError, request
 from aiohttp import ClientError, ClientSession
 from flask import make_response
 

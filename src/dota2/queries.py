@@ -82,6 +82,8 @@ async def get_match(match_id: str, account_id: Optional[str] = None) -> dict:
     else:
         logging.debug("Querying for match")
         match = await fetch_match_data(match_id)
+    if not match:
+        return {}
 
     # Get player summary for game from cache or match data
     if account_id:
@@ -200,13 +202,10 @@ def extract_match_length(duration_s: int) -> str:
 
 def extract_player_results(match: dict, account_id: str, key: str) -> dict:
     """Get result and hero for player's match list"""
-    player_details = match["players"]
+    player_details = match["players"][account_id]
     player_results = {
-        "id": account_id,
-        "hero": player_details[account_id]["hero"],
-        "result": "won"
-        if player_details[account_id]["is_radiant"] == match["radiant_win"]
-        else "lost",
+        **player_details,
+        "result": "won" if player_details["is_radiant"] == match["radiant_win"] else "lost",
     }
     StaticObjects.CACHE[key] = player_results
     return player_results

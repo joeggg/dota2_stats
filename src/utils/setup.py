@@ -3,9 +3,10 @@
 """
 import logging
 import sys
-from typing import Dict, List
+import time
+from typing import Dict, List, Optional
 
-import requests
+from requests import HTTPError, request
 from cachetools import TTLCache
 
 
@@ -57,19 +58,20 @@ class StaticObjects:
 
     @classmethod
     def load_hero_data(cls) -> None:
-        hero_data = requests.get(
+        hero_data = sync_request(
             "http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1",
             params={"key": cls.KEY, "language": "en-GB"},
-        ).json()
+        )
         cls.HEROES = {hero["id"]: hero["localized_name"] for hero in hero_data["result"]["heroes"]}
         cls.HEROES[0] = None
+        logging.info("Got heroes data")
 
     @classmethod
     def load_item_data(cls) -> None:
-        item_data = requests.get(
+        item_data = sync_request(
             "http://api.steampowered.com/IEconDOTA2_570/GetGameItems/v1",
             params={"key": cls.KEY, "language": "en-GB"},
-        ).json()
+        )
         cls.ITEMS = {
             item["id"]: {
                 "name": item["localized_name"],
@@ -78,6 +80,7 @@ class StaticObjects:
             for item in item_data["result"]["items"]
         }
         cls.ITEMS[0] = None
+        logging.info("Got items data")
 
 
 def setup_logger() -> None:
@@ -88,3 +91,26 @@ def setup_logger() -> None:
     formatter = logging.Formatter("[%(asctime)s]-[%(funcName)s]-[%(levelname)s]: %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
+
+def sync_request(
+    url: str,
+    params: Optional[dict] = None,
+    method: str = "GET",
+    attempts: int = 10,
+) -> dict:
+    """Make an async HTTP request to the Steam API safely"""
+    params = params or {}
+    for attempt in range(attempts):
+        try:
+            resp = request(method, url, params=params)
+            resp.raise_for_status()
+            data = resp.json()
+            return data
+        except HTTPError as exc:
+            logging.debug(exc.headers)
+            logging.error(f"{exc}: Attempt {attempt+1} of {attempts}")
+            time.sleep(0.2)
+            continue
+
+    return {}

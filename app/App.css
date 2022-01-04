@@ -40,7 +40,7 @@ p {
     text-align: left;
     font-size: 20px;
     padding: 2px 50px;
-    line-height: 30px;
+    line-height: 200%;
     border-bottom: 2px solid #444a57;
     border-collapse: collapse;
     background-color: #282c34;
@@ -48,6 +48,7 @@ p {
 }
 .MatchesRow {
     font-weight: 600;
+    color: #6e7f96;
 }
 .MatchesHeader {
     font-weight: 800;
@@ -73,6 +74,38 @@ p {
 }
 #GapRow {
     border-top: 30px solid #444a57;
+}
+
+.KDAStat {
+    color: #6e7f96;
+    font-size: 13px;
+    text-align: center;
+    position: relative;
+    bottom: 900%;
+}
+
+.KDA {
+    border: 1px solid rgb(0, 0, 0);
+    width: 150px;
+    block-size: 5px;
+    margin-top: 7%;
+}
+
+.Bar {
+    block-size: 5px;
+    float: left;
+}
+
+#Kills {
+    background-color: #277a24;
+}
+
+#Deaths {
+    background-color: #c52a2a;
+}
+
+#Assists {
+    background-color: #55596e;
 }
 
 /* Buttons and links */

@@ -9,8 +9,8 @@ from .utils.setup import setup_logger, StaticObjects
 
 
 def main():
-    StaticObjects.setup()
     setup_logger()
+    StaticObjects.setup()
     server = ServerThread()
     # dota2 = Dota2Thread()
     # dota2.start()
