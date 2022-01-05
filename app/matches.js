@@ -81,6 +81,14 @@ function Matches() {
                                     to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
+                                    {match.game_mode}
+                                </Link>
+                            </td>
+                            <td className="MatchesRow">
+                                <Link
+                                    to={`match/${match.match_id}`}
+                                    className="MatchLink"
+                                >
                                     {match.length}
                                 </Link>
                             </td>
@@ -146,6 +154,7 @@ function Matches() {
                                 <tr key="labels">
                                     <th className="MatchesHeader">Hero</th>
                                     <th className="MatchesHeader">Result</th>
+                                    <th className="MatchesHeader">Game mode</th>
                                     <th className="MatchesHeader">Duration</th>
                                     <th className="MatchesHeader">K D A</th>
                                     <th className="MatchesHeader">Time</th>
