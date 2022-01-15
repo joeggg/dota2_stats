@@ -1,6 +1,8 @@
 """
     App main entry point
 """
+import logging
+import sys
 import time
 
 from .dota2 import Dota2Thread
@@ -9,6 +11,7 @@ from .utils.setup import setup_logger, StaticObjects
 
 
 def main():
+    """Start all threads needed"""
     setup_logger()
     StaticObjects.setup()
     server = ServerThread()
@@ -23,6 +26,8 @@ def main():
             break
 
     server.shutdown()
+    logging.info("Finised shutting down")
+    sys.exit()
 
 
 main()

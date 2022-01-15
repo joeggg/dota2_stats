@@ -86,7 +86,7 @@ class StaticObjects:
 def setup_logger() -> None:
     """Setup the logger"""
     logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
     handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter("[%(asctime)s]-[%(funcName)s]-[%(levelname)s]: %(message)s")
     handler.setFormatter(formatter)

@@ -24,8 +24,8 @@ async def player(account_id: str) -> dict:
         return "Invalid account ID"
 
     logging.info("Fetching player data for account %s", account_id)
-    player = await queries.get_player(account_id)
-    return player
+    player_data = await queries.get_player(account_id)
+    return player_data
 
 
 @format_server_response
@@ -34,9 +34,9 @@ async def matches(account_id: str) -> List[dict]:
     if not account_id:
         return "Invalid account ID"
 
-    logging.info(f"Fetching match data for account {account_id}")
-    matches = await queries.get_matches(account_id)
-    return matches
+    logging.info("Fetching match data for account %s", account_id)
+    matches_data = await queries.get_matches(account_id)
+    return matches_data
 
 
 @format_server_response
@@ -47,5 +47,5 @@ async def match(match_id: str) -> dict:
     account_id = request.args.get("id")
 
     logging.info("Fetching match data for match %s", match_id)
-    match = await queries.get_match(match_id, account_id)
-    return match
+    match_data = await queries.get_match(match_id, account_id)
+    return match_data

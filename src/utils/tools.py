@@ -8,7 +8,6 @@ import time
 from datetime import datetime
 from typing import Optional, Tuple
 
-from requests import HTTPError, request
 from aiohttp import ClientError, ClientSession
 from flask import make_response
 
@@ -35,7 +34,7 @@ async def async_request(
                     data = await resp.json()
                     return data
         except ClientError as exc:
-            logging.debug(exc.headers)
+            logging.debug(exc.args)
             logging.error(f"{exc}: Attempt {attempt+1} of {attempts}")
             await asyncio.sleep(0.2)
             continue

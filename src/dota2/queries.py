@@ -12,33 +12,6 @@ from ..utils.setup import StaticObjects
 from ..utils.tools import async_request, format_date
 
 
-GAME_MODES = {
-    0: None,
-    1: "All Pick",
-    2: "Captain's Mode",
-    3: "Random Draft",
-    4: "Single Draft",
-    5: "All Random",
-    6: "Intro",
-    7: "Diretide",
-    8: "Reverse Captain's Mode",
-    9: "The Greeviling",
-    10: "Tutorial",
-    11: "Mid Only",
-    12: "Least Played",
-    13: "New Player Pool",
-    14: "Compendium Matchmaking",
-    15: "Co-op vs Bots",
-    16: "Captains Draft",
-    18: "Ability Draft",
-    20: "All Random Deathmatch",
-    21: "1v1 Mid Only",
-    # 22: "Ranked Matchmaking",
-    22: "All Pick",  # all pick game modes returning 22 for some reason
-    23: "Turbo Mode",
-}
-
-
 async def get_player(account_id: str) -> dict:
     """Get player summary info"""
     if account_id in StaticObjects.CACHE:
@@ -104,10 +77,10 @@ async def get_match(match_id: str, account_id: Optional[str] = None) -> dict:
     """Get a single match's data and format for the UI"""
     # Get match data from cache or API
     if match_id in StaticObjects.CACHE:
-        logging.debug("Found cached match")
+        logging.debug("Found cached match data for match %s", match_id)
         match = copy.deepcopy(StaticObjects.CACHE[match_id])
     else:
-        logging.debug("Querying for match")
+        logging.debug("Querying for match %s", match_id)
         match = await fetch_match_data(match_id)
     if not match:
         return {}
@@ -116,10 +89,10 @@ async def get_match(match_id: str, account_id: Optional[str] = None) -> dict:
     if account_id:
         key = f"{account_id}/{match_id}"
         if key in StaticObjects.CACHE:
-            logging.debug("Found cached player results")
+            logging.debug("Found cached player results for match %s", match_id)
             player_results = StaticObjects.CACHE[key]
         else:
-            logging.debug("Generating player results")
+            logging.debug("Generating player results for match %s", match_id)
             player_results = extract_player_results(match, account_id, key)
     else:
         player_results = {}
@@ -153,7 +126,7 @@ async def fetch_match_data(match_id: str) -> dict:
     # Format results
     match_out = {
         "match_id": match_id,
-        "game_mode": GAME_MODES[match.get("game_mode", 0)],
+        "game_mode": consts.GAME_MODES[match.get("game_mode", 0)],
         "start_time": f"{date} {time}",
         "length": match_length,
         "radiant_win": match.get("radiant_win"),

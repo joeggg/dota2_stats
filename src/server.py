@@ -12,6 +12,10 @@ from . import routes
 
 
 class ServerThread(threading.Thread):
+    """
+    HTTP server thread
+    """
+
     def __init__(self, *args, **kwargs):
         self.app = Flask("dota2_stats")
         self.server: BaseWSGIServer
@@ -23,15 +27,17 @@ class ServerThread(threading.Thread):
         self.app.add_url_rule("/match/<match_id>", view_func=routes.match)
 
     def run(self) -> None:
+        """Starts the server thread"""
         logging.info("Starting server")
         self.server = create_server(self.app, listen="0.0.0.0:5656")
         self.server.run()
 
-    def shutdown(self) -> None:
+    def shutdown(self, timeout: int = 20) -> None:
+        """Attempts to stop the server thread and waits for it to join"""
         logging.info("Trying to shut down server")
         if self.is_alive():
             self.server.close()
-        self.join(20)
+        self.join(timeout)
 
         if not self.is_alive():
             logging.info("Server has shut down")
