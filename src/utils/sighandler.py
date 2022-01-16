@@ -26,7 +26,7 @@ class SigHandler:
     def graceful_exit(self, signum: int, _) -> None:
         logging.info("Caught signal %s, shutting down...", signum)
         self.server.shutdown(timeout=5)
-        # self.dota.shutdown()
+        self.dota.shutdown()
         signal.signal(signal.SIGINT, self.default_sigint)
         signal.signal(signal.SIGTERM, self.default_sigterm)
         os.kill(os.getpid(), signum)

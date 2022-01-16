@@ -2,12 +2,7 @@
     App main entry point
 """
 
-import gevent.monkey
-
-gevent.monkey.patch_socket()
-gevent.monkey.patch_ssl()
 import logging
-import sys
 import time
 
 from .dota2 import Dota2Thread
@@ -23,11 +18,13 @@ def main():
     server = ServerThread()
     dota2 = Dota2Thread()
     _ = SigHandler(server, dota2)
-    # dota2.start()
+    dota2.start()
     server.start()
+    # time.sleep(2)
+    # dota2.get_match_data(6377407822)
 
     start = time.time()
-    heartbeat_interval = 10
+    heartbeat_interval = 600
     while True:
         time.sleep(1)
         now = time.time()
