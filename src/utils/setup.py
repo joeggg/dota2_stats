@@ -42,7 +42,7 @@ class StaticObjects:
     def setup(cls) -> None:
         """Set up all required objects"""
         cls.load_api_key()
-        # cls.load_credentials()
+        cls.load_credentials()
         cls.load_hero_data()
         cls.load_item_data()
 
@@ -86,9 +86,11 @@ class StaticObjects:
 def setup_logger() -> None:
     """Setup the logger"""
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     handler = logging.StreamHandler(sys.stdout)
-    formatter = logging.Formatter("[%(asctime)s]-[%(funcName)s]-[%(levelname)s]: %(message)s")
+    formatter = logging.Formatter(
+        "[%(asctime)s]-[%(threadName)s]-[%(funcName)s]-[%(levelname)s]: %(message)s"
+    )
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
