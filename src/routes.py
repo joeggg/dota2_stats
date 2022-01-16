@@ -6,7 +6,7 @@ from typing import List
 
 from flask import request
 
-from .dota2 import queries
+from .dotaio import queries
 from .utils.tools import format_server_response
 
 

@@ -36,7 +36,7 @@ async def async_request(
         except ClientError as exc:
             logging.debug(exc.args)
             logging.error(f"{exc}: Attempt {attempt+1} of {attempts}")
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(0.1)
             continue
 
     return {}

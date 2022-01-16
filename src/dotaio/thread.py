@@ -61,7 +61,7 @@ class Dota2Thread(threading.Thread):
 
     def process_match_data(self, match_id, eresult, data: CMsgDOTAMatch):
         dl_url = f"http://replay{data.cluster}.valve.net/570/{match_id}_{data.replay_salt}.dem.bz2"
-        download_file(dl_url, dl_url.split("/")[-1])
+        download_file(dl_url, f'data/{dl_url.split("/")[-1]}')
 
     def process_data(self, *args):
         print(args)

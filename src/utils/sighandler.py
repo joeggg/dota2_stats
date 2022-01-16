@@ -6,7 +6,7 @@ import os
 import signal
 
 
-from src.dota2 import Dota2Thread
+from src.dotaio import Dota2Thread
 from src.server import ServerThread
 
 

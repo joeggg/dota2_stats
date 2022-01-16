@@ -1,5 +1,6 @@
 aiohttp==3.8.1
 cachetools==5.0.0
 flask[async]==2.0.2
+python-snappy==0.6.0
 requests==2.26.0
 waitress==2.0.0
