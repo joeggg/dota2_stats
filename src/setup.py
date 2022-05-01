@@ -22,7 +22,7 @@ class StaticObjects:
     @classmethod
     def load_api_key(cls):
         with open("secret/steam_key.txt", "r") as ffile:
-            cls.KEY = ffile.read()
+            cls.KEY = ffile.read().strip()
 
     @classmethod
     def load_hero_data(cls):
