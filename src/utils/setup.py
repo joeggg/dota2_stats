@@ -49,12 +49,12 @@ class StaticObjects:
     @classmethod
     def load_api_key(cls) -> None:
         with open("secret/steam_key.txt", "r") as ffile:
-            cls.KEY = ffile.read()
+            cls.KEY = ffile.read().strip()
 
     @classmethod
     def load_credentials(cls) -> None:
         with open("secret/steam_credentials.txt", "r") as ffile:
-            cls.CREDENTIALS.set(ffile.read().split("\n"))
+                cls.CREDENTIALS.set(ffile.read().split("\n")[:2])
 
     @classmethod
     def load_hero_data(cls) -> None:
@@ -86,7 +86,7 @@ class StaticObjects:
 def setup_logger() -> None:
     """Setup the logger"""
     logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
     handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter(
         "[%(asctime)s]-[%(threadName)s]-[%(funcName)s]-[%(levelname)s]: %(message)s"
