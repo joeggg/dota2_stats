@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  api:
+    image: dota2stats-api:latest
+    ports:
+      - "5656:5656"
+  parser:
+    image: dota2stats-parser:latest
+  ui:
+    image: dota2stats-ui:latest
+    ports:
+      - "3000:3000"

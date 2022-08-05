@@ -46,10 +46,12 @@ p {
     background-color: #282c34;
     color: rgb(143, 143, 143);
 }
+
 .MatchesRow {
     font-weight: 600;
     color: #6e7f96;
 }
+
 .MatchesHeader {
     font-weight: 800;
 }
@@ -66,12 +68,15 @@ p {
     background-color: #282c34;
     color: rgb(143, 143, 143);
 }
+
 .ScoreRow {
     font-weight: 600;
 }
+
 .ScoreHeader {
     font-weight: 800;
 }
+
 #GapRow {
     border-top: 30px solid #444a57;
 }
@@ -175,6 +180,7 @@ a {
     .PlayerData {
         display: inherit;
     }
+
     .avatar {
         width: 5%;
     }
@@ -216,10 +222,15 @@ a {
     display: inline;
 }
 
+.Title-Text {
+    padding-top: 0px;
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }

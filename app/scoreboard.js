@@ -8,8 +8,8 @@ function Scoreboard() {
 
     const accountId = params.accountId;
     const matchId = params.matchId;
-    const url = 'http://94.11.9.194:5656';
-    // const ip = 'http://127.0.0.1:5656';
+    // const url = 'http://51.19.88.238:5656';
+    const url = 'http://127.0.0.1:5656';
 
     /**
      *  Match scoreboard effect

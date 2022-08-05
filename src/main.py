@@ -5,7 +5,6 @@
 import logging
 import time
 
-from .dotaio import Dota2Thread
 from .server import ServerThread
 from .utils.setup import setup_logger, StaticObjects
 from .utils.sighandler import SigHandler
@@ -16,12 +15,8 @@ def main():
     setup_logger()
     StaticObjects.setup()
     server = ServerThread()
-    dota2 = Dota2Thread()
-    _ = SigHandler(server, dota2)
-    dota2.start()
+    _ = SigHandler(server)
     server.start()
-    # time.sleep(2)
-    # dota2.get_match_data(6377407822)
 
     start = time.time()
     heartbeat_interval = 600

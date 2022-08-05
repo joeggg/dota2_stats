@@ -1,0 +1,17 @@
+FROM python:3.10-slim
+
+WORKDIR /api
+
+RUN groupadd api && useradd -m -d /api -g api api
+RUN chown -R api /api && chmod -R 750 /api
+USER api
+
+COPY src ./src
+COPY secret ./secret
+COPY requirements.txt .
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+CMD [ "python", "-m", "src.main" ]
+EXPOSE 5656

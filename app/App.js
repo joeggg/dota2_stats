@@ -10,8 +10,8 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <h3 className="title">
-                    <a href="/">
-                        <img src={logo} className="App-logo" alt="logo" />
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <a href="/" className='Title-Text'>
                         Joe&apos;s Dota Stats
                         <br />
                     </a>

@@ -5,3 +5,9 @@ secret
 build
 .vscode
 data
+run
+class_info.json
+send_tables.json
+string_tables.json
+matches.json
+*.dem

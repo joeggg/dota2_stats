@@ -4,36 +4,16 @@
 import logging
 import sys
 import time
-from typing import Dict, List, Optional
+from typing import Optional
 
 from requests import HTTPError, request
 from cachetools import TTLCache
-
-
-class Credentials:
-    """Store steam credentials"""
-
-    def __init__(self) -> None:
-        self.username = ""
-        self.password = ""
-
-    def set(self, credentials: List[str]) -> None:
-        if len(credentials) != 2:
-            raise Exception("Incorrect number of credential terms, should be username and password")
-        self.username, self.password = credentials
-
-    def get(self) -> Dict[str, str]:
-        return {
-            "username": self.username,
-            "password": self.password,
-        }
 
 
 class StaticObjects:
     """Immutable objects needed for queries and data processing"""
 
     CACHE = TTLCache(1000, 300)
-    CREDENTIALS = Credentials()
     HEROES = {}
     ITEMS = {}
     KEY = ""
@@ -42,7 +22,6 @@ class StaticObjects:
     def setup(cls) -> None:
         """Set up all required objects"""
         cls.load_api_key()
-        cls.load_credentials()
         cls.load_hero_data()
         cls.load_item_data()
 
@@ -50,11 +29,6 @@ class StaticObjects:
     def load_api_key(cls) -> None:
         with open("secret/steam_key.txt", "r") as ffile:
             cls.KEY = ffile.read().strip()
-
-    @classmethod
-    def load_credentials(cls) -> None:
-        with open("secret/steam_credentials.txt", "r") as ffile:
-                cls.CREDENTIALS.set(ffile.read().split("\n")[:2])
 
     @classmethod
     def load_hero_data(cls) -> None:
@@ -86,7 +60,7 @@ class StaticObjects:
 def setup_logger() -> None:
     """Setup the logger"""
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter(
         "[%(asctime)s]-[%(threadName)s]-[%(funcName)s]-[%(levelname)s]: %(message)s"

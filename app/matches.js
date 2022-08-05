@@ -7,8 +7,8 @@ function Matches() {
     const [matchList, setMatchList] = useState(<div></div>);
 
     const accountId = params.accountId;
-    const url = 'http://94.11.9.194:5656';
-    // const ip = 'http://127.0.0.1:5656';
+    // const url = 'http://51.19.88.238:5656';
+    const url = 'http://127.0.0.1:5656';
 
     /**
      *  Player info effect
@@ -98,9 +98,8 @@ function Matches() {
                                         className="Bar"
                                         id="Kills"
                                         style={{
-                                            width: `${
-                                                (100 * player.kills) / total
-                                            }%`,
+                                            width: `${(100 * player.kills) / total
+                                                }%`,
                                         }}
                                     >
                                         <p className="KDAStat">
@@ -111,9 +110,8 @@ function Matches() {
                                         className="Bar"
                                         id="Deaths"
                                         style={{
-                                            width: `${
-                                                (100 * player.deaths) / total
-                                            }%`,
+                                            width: `${(100 * player.deaths) / total
+                                                }%`,
                                         }}
                                     >
                                         <p className="KDAStat">
@@ -124,9 +122,8 @@ function Matches() {
                                         className="Bar"
                                         id="Assists"
                                         style={{
-                                            width: `${
-                                                (100 * player.assists) / total
-                                            }%`,
+                                            width: `${(100 * player.assists) / total
+                                                }%`,
                                         }}
                                     >
                                         <p className="KDAStat">
