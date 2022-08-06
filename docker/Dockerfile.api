@@ -2,16 +2,15 @@ FROM python:3.10-slim
 
 WORKDIR /api
 
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+COPY api ./api
+COPY secret ./secret
+
 RUN groupadd api && useradd -m -d /api -g api api
 RUN chown -R api /api && chmod -R 750 /api
 USER api
 
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-COPY src ./src
-COPY secret ./secret
-
-CMD [ "python", "-m", "src.main" ]
-EXPOSE 5656
+CMD [ "uvicorn", "api.main:app", "--host", "0.0.0.0" ]
+EXPOSE 8000

@@ -25,6 +25,7 @@ function App() {
                         path="players/:accountId/match/:matchId"
                         element={<Scoreboard />}
                     />
+                    {/* <Route path="match/:matchId/parse" element={<Parse />} /> */}
                 </Routes>
             </BrowserRouter>
         </div>

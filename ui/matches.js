@@ -8,7 +8,7 @@ function Matches() {
 
     const accountId = params.accountId;
     // const url = 'http://51.19.88.238:5656';
-    const url = 'http://127.0.0.1:5656';
+    const url = 'http://127.0.0.1:8000';
 
     /**
      *  Player info effect
@@ -16,7 +16,7 @@ function Matches() {
     useEffect(() => {
         fetch(`${url}/player/${accountId}`).then((res) => {
             res.text().then((text) => {
-                const player = JSON.parse(text).results;
+                const player = JSON.parse(text);
                 setPlayerSummary(
                     <div>
                         <div className="PlayerData">
@@ -42,9 +42,9 @@ function Matches() {
      *  Match list effect
      */
     useEffect(() => {
-        fetch(`${url}/matches/${accountId}`).then((res) => {
+        fetch(`${url}/player/${accountId}/matches`).then((res) => {
             res.text().then((text) => {
-                const matches = JSON.parse(text).results;
+                const matches = JSON.parse(text);
                 // Create the match history element
                 const matchListBody = matches.map((matchData) => {
                     const match = matchData.match;

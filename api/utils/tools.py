@@ -9,7 +9,6 @@ from datetime import datetime
 from typing import Optional, Tuple
 
 from aiohttp import ClientError, ClientSession
-from flask import make_response
 from redis import Redis
 
 from .setup import StaticObjects
@@ -48,26 +47,6 @@ async def async_request(
             continue
 
     return {}
-
-
-def format_server_response(func):
-    """Adds required headers to response and times the function"""
-
-    @functools.wraps(func)
-    async def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        data = await func(*args, **kwargs)
-        end = time.perf_counter()
-        logging.info("Time taken for %s: %ss", func.__name__, end - start)
-
-        data = {"results": data}
-        resp = make_response(data)
-        resp.headers["Access-Control-Allow-Origin"] = "*"
-        logging.info(resp)
-
-        return resp
-
-    return wrapper
 
 
 def format_date(datetime: datetime) -> Tuple[str, str]:

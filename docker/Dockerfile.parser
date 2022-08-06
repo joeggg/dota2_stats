@@ -12,4 +12,4 @@ COPY secret/steam_credentials.txt secret/.
 
 RUN go build -o run *.go
 
-CMD ["./run"]
+CMD [ "./run" ]

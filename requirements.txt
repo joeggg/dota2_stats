@@ -1,7 +1,7 @@
 aiohttp==3.8.1
 cachetools==5.0.0
-flask[async]==2.0.2
-python-snappy==0.6.1
+fastapi==0.79.0
+pydantic==1.9.1
 redis==4.3.4
 requests==2.26.0
-waitress==2.0.0
+uvicorn[standard]==0.18.2

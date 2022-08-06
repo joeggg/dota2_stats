@@ -3,7 +3,7 @@ services:
   api:
     image: dota2stats-api:latest
     ports:
-      - "5656:5656"
+      - "8000:8000"
   parser:
     image: dota2stats-parser:latest
   redis:

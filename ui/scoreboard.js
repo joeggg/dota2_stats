@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+
 function Scoreboard() {
     const params = useParams();
     const [matchData, setMatchData] = useState({});
@@ -9,15 +10,15 @@ function Scoreboard() {
     const accountId = params.accountId;
     const matchId = params.matchId;
     // const url = 'http://51.19.88.238:5656';
-    const url = 'http://127.0.0.1:5656';
+    const url = 'http://127.0.0.1:8000';
 
     /**
      *  Match scoreboard effect
      */
     useEffect(() => {
-        fetch(`${url}/match/${matchId}?id=${accountId}`).then((res) => {
+        fetch(`${url}/match/${matchId}?account_id=${accountId}`).then((res) => {
             res.text().then((text) => {
-                const matchObj = JSON.parse(text).results;
+                const matchObj = JSON.parse(text);
                 const match = matchObj.match;
                 // const PlayerDetails = matchObj.player;
                 // Create the scoreboard element

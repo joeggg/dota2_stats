@@ -13,5 +13,5 @@ COPY --from=build /build/node_modules ./node_modules
 COPY --from=build /build/build ./build
 
 USER ui
-CMD ["serve", "-s", "build"]
+CMD [ "serve", "-s", "build" ]
 EXPOSE 3000
