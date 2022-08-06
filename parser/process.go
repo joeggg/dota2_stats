@@ -52,6 +52,8 @@ func (w *Worker) processReplay(matchId uint64) {
 	if err != nil {
 		panic(err)
 	}
+	defer os.Remove(fname)
+
 	w.lg.Infof("Parsing replay %s\n", fname)
 	rp := mango.WithDefaultGatherers(mango.NewReplayParser())
 	err = rp.Initialise(fname)
