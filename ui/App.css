@@ -115,14 +115,25 @@ p {
 
 /* Buttons and links */
 
-.BackButton {
-    display: block;
-    margin-left: 10px;
-    margin-right: auto;
-    color: #889dbe;
-    background-color: #2d323a;
+.ButtonContainer {
+    display: flex;
+}
+
+.Button {
     width: 200px;
     height: 50px;
+    color: #889dbe;
+    background-color: #2d323a;
+}
+
+#Back {
+    margin-left: 20px;
+    margin-right: auto;
+}
+
+#Parse {
+    margin-right: 20px;
+    margin-left: auto;
 }
 
 .LinkButton {

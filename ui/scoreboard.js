@@ -103,11 +103,18 @@ function Scoreboard() {
 
     return (
         <div className="Page">
-            <button className="BackButton">
-                <Link to={`/players/${accountId}`}>
-                    <p>Back to matches</p>
-                </Link>
-            </button>
+            <div className='ButtonContainer'>
+                <button className="Button" id="Back">
+                    <Link to={`/players/${accountId}`}>
+                        <p>Back to matches</p>
+                    </Link>
+                </button>
+                <button className="Button" id='Parse'>
+                    <Link to={`/parse?id=${matchId}`}>
+                        <p>Parse replay</p>
+                    </Link>
+                </button>
+            </div>
             <p className="MatchesTitle">Match scoreboard:</p>
             <p
                 className="ResultsTitle"
@@ -118,7 +125,7 @@ function Scoreboard() {
                 {matchData.winner} win!
             </p>
             {matchScoreboard}
-        </div>
+        </div >
     );
 }
 
