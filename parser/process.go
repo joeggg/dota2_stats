@@ -17,7 +17,7 @@ import (
 )
 
 const workQueue = "parser:work"
-const resultKey = "parser:result"
+const resultKeyTemplate = "parser:result:"
 
 type Worker struct {
 	ctx context.Context
@@ -63,9 +63,10 @@ func (w *Worker) processReplay(matchId uint64) {
 		panic(err)
 	}
 	jsonStr, _ := json.MarshalIndent(rp.GetResults()["Chat"], "", "  ")
-	w.lg.Infoln("Finished parsing %s", fname)
+	w.lg.Infof("Finished parsing %s\n", fname)
 
-	err = w.r.LPush(w.ctx, resultKey+fmt.Sprint(matchId), string(jsonStr)).Err()
+	key := resultKeyTemplate + fmt.Sprint(matchId)
+	err = w.r.Set(w.ctx, key, string(jsonStr), time.Hour).Err()
 	if err != nil {
 		panic(err)
 	}

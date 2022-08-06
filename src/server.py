@@ -26,6 +26,8 @@ class ServerThread(threading.Thread):
         self.app.add_url_rule("/matches/<account_id>", view_func=routes.matches)
         self.app.add_url_rule("/player/<account_id>", view_func=routes.player)
         self.app.add_url_rule("/match/<match_id>", view_func=routes.match)
+        self.app.add_url_rule("/parse", view_func=routes.parse)
+        self.app.add_url_rule("/result", view_func=routes.result)
 
     def run(self) -> None:
         """Starts the server thread"""
