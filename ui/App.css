@@ -2,11 +2,16 @@
 
 .App {
     text-align: center;
-    background-color: #2d323a;
+    background-color: #282c34;
 }
 
 .Page {
     background-color: #282c34;
+}
+
+footer {
+    padding: 5px;
+    color: white;
 }
 
 p {
@@ -14,6 +19,18 @@ p {
     font-size: 20px;
     font-weight: 700;
     text-align: left;
+}
+
+pre {
+    color: rgb(103, 112, 119);
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+    margin-left: 100px;
+}
+
+.MidText {
+    text-align: center;
 }
 
 /* Various titles on pages */

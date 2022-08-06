@@ -24,6 +24,7 @@ router = APIRouter(prefix="/match")
 class ParseStatus(str, Enum):
     QUEUED = "queued"
     COMPLETE = "complete"
+    NONE = "none"
 
 
 class ParseResponse(BaseModel):
@@ -52,9 +53,9 @@ def get_parse(match_id: str):
     result = r.get(f"{PARSER_RESULT}{match_id}")
 
     if result is None:
-        raise HTTPException(status_code=404, detail="parse not found")
+        return ParseResponse(status=ParseStatus.NONE, message="parse not found")
     if result == ParseStatus.QUEUED:
-        return ParseResponse(status=ParseStatus.QUEUED)
+        return ParseResponse(status=ParseStatus.QUEUED, message="Replay parse in progress")
 
     return ParseResponse(status=ParseStatus.COMPLETE, result=json.loads(result))
 
@@ -68,7 +69,7 @@ def post_parse(match_id: str):
     result_key = f"{PARSER_RESULT}{match_id}"
     check = r.get(result_key)
     if check:
-        return ParseResponse(status=ParseStatus.QUEUED, message="Replay parse already started")
+        return ParseResponse(status=ParseStatus.QUEUED, message="Replay parse in progress")
 
     # Set result key to prevent replay request spam
     r.set(result_key, ParseStatus.QUEUED, 60)

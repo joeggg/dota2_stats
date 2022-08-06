@@ -29,6 +29,7 @@ function App() {
                     <Route path="parse" element={<Parse />} />
                 </Routes>
             </BrowserRouter>
+            <footer></footer>
         </div>
     );
 }

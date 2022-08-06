@@ -13,7 +13,7 @@ function Parse() {
         const result = await res.json();
         console.log(result.status)
         if (result.status === "queued") {
-            return setDisplay(<p>   Parse in progress</p>);
+            return setDisplay(<p className="MidText">Parse in progress</p>);
         }
         history.back()
     }

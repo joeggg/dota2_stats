@@ -7,6 +7,7 @@ function Scoreboard() {
     const params = useParams();
     const [matchData, setMatchData] = useState({});
     const [matchScoreboard, setMatchScoreboard] = useState(<div></div>);
+    const [parseResults, setParseResults] = useState(<div></div>);
 
     const accountId = params.accountId;
     const matchId = params.matchId;
@@ -101,6 +102,24 @@ function Scoreboard() {
         });
     }, []);
 
+    /**
+     * Parser results
+     */
+    useEffect(() => {
+        fetch(`${url}/match/${matchId}/parse`).then(res => res.json().then(data => {
+            if (data.status === "complete") {
+                setParseResults(
+                    <div>
+                        <p className="MidText">Parse results:</p>
+                        <pre>{JSON.stringify(data.result, null, 2)}</pre>
+                    </div>
+                )
+            } else {
+                setParseResults(<div><p className="MidText">No parse results yet</p> </div >)
+            }
+        }));
+    }, []);
+
     const onParse = () => {
         const requestOptions = {
             method: 'POST',
@@ -108,8 +127,8 @@ function Scoreboard() {
             body: JSON.stringify({})
         };
         fetch(`${url}/match/${matchId}/parse`, requestOptions)
-            .then(res => res.json())
-    }
+            .then(res => res.json());
+    };
 
     return (
         <div className="Page">
@@ -119,7 +138,7 @@ function Scoreboard() {
                         <p>Back to matches</p>
                     </Link>
                 </button>
-                <button className="Button" id='Parse' onClick={onParse}>
+                <button className="Button" id='Parse' onClick={onParse} style={{ width: "150px" }}>
                     <Link to={`/parse?id=${matchId}`}>
                         <p>Parse replay</p>
                     </Link>
@@ -135,6 +154,7 @@ function Scoreboard() {
                 {matchData.winner} win!
             </p>
             {matchScoreboard}
+            {parseResults}
         </div >
     );
 }
