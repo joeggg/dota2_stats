@@ -8,7 +8,7 @@ RUN npm install -g npm@latest
 COPY package.json package-lock.json ./
 RUN npm install --omit=dev
 
-COPY app/ src/
+COPY ui/ src/
 COPY public/ ./public
 
 CMD [ "npm", "run", "start" ]
