@@ -3,6 +3,7 @@ import logo from './dota2.svg';
 import './App.css';
 import Main from './main';
 import Matches from './matches';
+import Parse from './parse';
 import Scoreboard from './scoreboard';
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
                         path="players/:accountId/match/:matchId"
                         element={<Scoreboard />}
                     />
-                    {/* <Route path="match/:matchId/parse" element={<Parse />} /> */}
+                    <Route path="parse" element={<Parse />} />
                 </Routes>
             </BrowserRouter>
         </div>

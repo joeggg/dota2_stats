@@ -59,7 +59,7 @@ def get_parse(match_id: str):
     return ParseResponse(status=ParseStatus.COMPLETE, result=json.loads(result))
 
 
-@router.post("/{match_id}/parse", status_code=201, response_model=ParseResponse)
+@router.post("/{match_id}/parse", response_model=ParseResponse)
 def post_parse(match_id: str):
     if len(match_id) != 10:
         raise HTTPException(status_code=400, detail="Invalid match ID")
@@ -71,6 +71,6 @@ def post_parse(match_id: str):
         return ParseResponse(status=ParseStatus.QUEUED, message="Replay parse already started")
 
     # Set result key to prevent replay request spam
-    r.set(result_key, "in_progress", 60)
+    r.set(result_key, ParseStatus.QUEUED, 60)
     r.lpush(PARSER_QUEUE, match_id)
     return ParseResponse(status=ParseStatus.QUEUED, message="Started replay parse")

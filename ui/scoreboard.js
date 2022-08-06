@@ -101,6 +101,16 @@ function Scoreboard() {
         });
     }, []);
 
+    const onParse = () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        };
+        fetch(`${url}/match/${matchId}/parse`, requestOptions)
+            .then(res => res.json())
+    }
+
     return (
         <div className="Page">
             <div className='ButtonContainer'>
@@ -109,7 +119,7 @@ function Scoreboard() {
                         <p>Back to matches</p>
                     </Link>
                 </button>
-                <button className="Button" id='Parse'>
+                <button className="Button" id='Parse' onClick={onParse}>
                     <Link to={`/parse?id=${matchId}`}>
                         <p>Parse replay</p>
                     </Link>
