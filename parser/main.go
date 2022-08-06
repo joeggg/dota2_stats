@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/http"
 	"os"
 	"os/signal"
 	"reflect"
@@ -9,6 +8,7 @@ import (
 
 	"github.com/faceit/go-steam"
 	"github.com/faceit/go-steam/netutil"
+	"github.com/faceit/go-steam/protocol/steamlang"
 	"github.com/paralin/go-dota2"
 	"github.com/paralin/go-dota2/events"
 	"github.com/sirupsen/logrus"
@@ -19,10 +19,8 @@ func main() {
 	dc, readyCh := startDotaClient(lg)
 	// Wait for client welcome then start server
 	<-readyCh
-	h := Handler{lg, dc}
-	http.HandleFunc("/parse", h.handleParse)
-	lg.Infoln("Starting HTTP server")
-	http.ListenAndServe("0.0.0.0:5656", nil)
+	worker := newWorker(lg, dc)
+	go worker.listen()
 
 	// Wait for signal before closing
 	sc := make(chan os.Signal, 1)
@@ -49,7 +47,9 @@ func startDotaClient(lg *logrus.Logger) (*dota2.Dota2, chan bool) {
 			case *steam.ClientCMListEvent:
 				lg.Infoln("Received server list")
 			case *steam.LoggedOnEvent:
-				lg.Infoln("Logged in, setting game played")
+				lg.Infoln("Logged in, setting status to invisible")
+				sc.Social.SetPersonaState(steamlang.EPersonaState_Max)
+				lg.Infoln("Setting game being played to Dota 2")
 				sc.GC.SetGamesPlayed(dota2.AppID)
 			case *steam.WebSessionIdEvent:
 				lg.Infoln("Got a web session, saying hello")

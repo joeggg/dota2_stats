@@ -6,6 +6,8 @@ services:
       - "5656:5656"
   parser:
     image: dota2stats-parser:latest
+  redis:
+    image: redis:latest
   ui:
     image: dota2stats-ui:latest
     ports:

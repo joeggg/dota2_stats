@@ -8,35 +8,51 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strconv"
+	"time"
 
+	"github.com/go-redis/redis/v9"
 	"github.com/joeggg/mango"
 	"github.com/paralin/go-dota2"
 	"github.com/sirupsen/logrus"
 )
 
-type Handler struct {
-	lg *logrus.Logger
-	dc *dota2.Dota2
+const workQueue = "parser:work"
+const resultKey = "parser:result"
+
+type Worker struct {
+	ctx context.Context
+	r   *redis.Client
+	lg  *logrus.Logger
+	dc  *dota2.Dota2
 }
 
-func (h *Handler) handleParse(rw http.ResponseWriter, req *http.Request) {
-	qVals := req.URL.Query()
-	matchId := qVals["match_id"][0]
-	num, err := strconv.Atoi(matchId)
-	if err != nil {
-		rw.WriteHeader(http.StatusBadRequest)
-		return
+func newWorker(lg *logrus.Logger, dc *dota2.Dota2) *Worker {
+	ctx := context.Background()
+	r := redis.NewClient(&redis.Options{Addr: "redis:6379", Password: "", DB: 0})
+	return &Worker{ctx, r, lg, dc}
+}
+
+func (w *Worker) listen() {
+	for {
+		time.Sleep(time.Millisecond)
+		work := w.r.LPop(w.ctx, workQueue)
+		if work.Err() != nil {
+			continue
+		}
+		matchId, err := work.Uint64()
+		if err != nil {
+			continue
+		}
+		go w.processReplay(matchId)
 	}
-	go processReplay(h.lg, h.dc, uint64(num))
 }
 
-func processReplay(lg *logrus.Logger, dc *dota2.Dota2, matchId uint64) {
-	fname, err := downloadReplay(lg, dc, matchId)
+func (w *Worker) processReplay(matchId uint64) {
+	fname, err := w.downloadReplay(matchId)
 	if err != nil {
 		panic(err)
 	}
-	lg.Infof("Parsing replay %s\n", fname)
+	w.lg.Infof("Parsing replay %s\n", fname)
 	rp := mango.WithDefaultGatherers(mango.NewReplayParser())
 	err = rp.Initialise(fname)
 	if err != nil {
@@ -47,13 +63,18 @@ func processReplay(lg *logrus.Logger, dc *dota2.Dota2, matchId uint64) {
 		panic(err)
 	}
 	jsonStr, _ := json.MarshalIndent(rp.GetResults()["Chat"], "", "  ")
-	fmt.Println(string(jsonStr))
+	w.lg.Infoln("Finished parsing %s", fname)
+
+	err = w.r.LPush(w.ctx, resultKey+fmt.Sprint(matchId), string(jsonStr)).Err()
+	if err != nil {
+		panic(err)
+	}
 }
 
-func downloadReplay(lg *logrus.Logger, dc *dota2.Dota2, matchId uint64) (string, error) {
+func (w *Worker) downloadReplay(matchId uint64) (string, error) {
 	ctx := context.Background()
-	lg.Infof("Requesting match details for %d\n", matchId)
-	matchResp, err := dc.RequestMatchDetails(ctx, matchId)
+	w.lg.Infof("Requesting match details for %d\n", matchId)
+	matchResp, err := w.dc.RequestMatchDetails(ctx, matchId)
 	if err != nil {
 		return "", err
 	}
@@ -66,7 +87,7 @@ func downloadReplay(lg *logrus.Logger, dc *dota2.Dota2, matchId uint64) (string,
 		match.GetReplaySalt(),
 	)
 	// Download, uncompress and save replay file
-	lg.Infof("Downloading replay for %d\n", matchId)
+	w.lg.Infof("Downloading replay for %d\n", matchId)
 	replayResp, err := http.Get(url)
 	if err != nil {
 		return "", err
@@ -78,6 +99,6 @@ func downloadReplay(lg *logrus.Logger, dc *dota2.Dota2, matchId uint64) (string,
 	}
 	fname := fmt.Sprintf("%d.dem", matchId)
 	os.WriteFile(fname, data, 0666)
-	lg.Infof("Finished downloading replay for %d\n", matchId)
+	w.lg.Infof("Finished downloading replay for %d\n", matchId)
 	return fname, err
 }
