@@ -64,7 +64,7 @@ func (w *Worker) processReplay(matchId uint64) {
 	if err != nil {
 		panic(err)
 	}
-	jsonStr, _ := json.MarshalIndent(rp.GetResults()["Chat"], "", "  ")
+	jsonStr, _ := json.MarshalIndent(rp.GetResults(), "", "  ")
 	w.lg.Infof("Finished parsing %s\n", fname)
 
 	key := resultKeyTemplate + fmt.Sprint(matchId)

@@ -28,9 +28,8 @@ async def time_request(request: Request, call_next: Callable[[Request], Awaitabl
     start = time.perf_counter()
     response = await call_next(request)
     time_taken = str(time.perf_counter() - start)
-    logging.info("Time taken for %s: %ss", call_next.__name__, time_taken)
+    logging.info("%ss taken for request: %s", time_taken, request.url.path)
     response.headers["X-Process-Time"] = time_taken
-    logging.info(response)
     return response
 
 
