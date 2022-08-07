@@ -9,7 +9,7 @@ COPY package.json package-lock.json ./
 RUN npm install --omit=dev
 
 COPY ui/ src/
-COPY public/ ./public
+COPY public/ public/
 
 CMD [ "npm", "run", "start" ]
 EXPOSE 3000

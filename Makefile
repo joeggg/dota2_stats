@@ -1,4 +1,8 @@
-.PHONY: api parser ui ui-dev
+.PHONY: api dev parser ui ui-dev
+
+all: api parser ui
+
+dev: api parser ui-dev
 
 api:
 	docker build -t dota2stats-api:latest -f docker/Dockerfile.api .

@@ -54,6 +54,7 @@ def get_parse(match_id: str):
 
     if result is None:
         return ParseResponse(status=ParseStatus.NONE, message="parse not found")
+
     if result == ParseStatus.QUEUED:
         return ParseResponse(status=ParseStatus.QUEUED, message="Replay parse in progress")
 
