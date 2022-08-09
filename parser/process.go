@@ -17,7 +17,8 @@ import (
 )
 
 const workQueue = "parser:work"
-const resultKeyTemplate = "parser:result:"
+const resultKeyPrefix = "parser:result:"
+const resultExpiry = time.Hour
 
 type Worker struct {
 	ctx context.Context
@@ -36,7 +37,7 @@ func (w *Worker) listen() {
 	for {
 		time.Sleep(time.Millisecond)
 		work := w.r.LPop(w.ctx, workQueue)
-		if work.Err() != nil {
+		if err := work.Err(); err != nil {
 			continue
 		}
 		matchId, err := work.Uint64()
@@ -67,8 +68,8 @@ func (w *Worker) processReplay(matchId uint64) {
 	jsonStr, _ := json.MarshalIndent(rp.GetResults(), "", "  ")
 	w.lg.Infof("Finished parsing %s\n", fname)
 
-	key := resultKeyTemplate + fmt.Sprint(matchId)
-	err = w.r.Set(w.ctx, key, string(jsonStr), time.Hour).Err()
+	key := resultKeyPrefix + fmt.Sprint(matchId)
+	err = w.r.Set(w.ctx, key, string(jsonStr), resultExpiry).Err()
 	if err != nil {
 		panic(err)
 	}

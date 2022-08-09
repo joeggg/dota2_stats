@@ -14,13 +14,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const numWorkers = 2
+
 func main() {
 	lg := logrus.New()
 	dc, readyCh := startDotaClient(lg)
 	// Wait for client welcome then start server
 	<-readyCh
-	worker := newWorker(lg, dc)
-	go worker.listen()
+	for i := 0; i < numWorkers; i++ {
+		go newWorker(lg, dc).listen()
+	}
 
 	// Wait for signal before closing
 	sc := make(chan os.Signal, 1)
