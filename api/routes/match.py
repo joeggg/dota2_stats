@@ -36,8 +36,8 @@ class ParseResponse(BaseModel):
 @router.get("/{match_id}")
 async def match(match_id: str, account_id: str | None = None) -> dict:
     """Return formatted match data to the frontend"""
-    if not match_id or len(match_id) != 10:
-        return "Invalid match ID"
+    if len(match_id) != 10:
+        raise HTTPException(status_code=400, detail="Invalid match ID")
 
     logging.info("Fetching match data for match %s", match_id)
     match_data = await queries.get_match(match_id, account_id)
