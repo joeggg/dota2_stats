@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/faceit/go-steam v0.0.0-20190206021251-2be7df6980e1
 	github.com/go-redis/redis/v9 v9.0.0-beta.2
-	github.com/joeggg/mango v0.1.2
+	github.com/joeggg/mango v0.1.3
 	github.com/paralin/go-dota2 v0.0.0-20220331181732-5b8200dfaadf
 	github.com/sirupsen/logrus v1.4.2
 )
