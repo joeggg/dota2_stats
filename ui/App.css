@@ -50,7 +50,18 @@ pre {
     font-size: 23px;
 }
 
+/* Parse results */
+
+.ParsedGraph {
+    width: 50%;
+}
+
 /* Tables */
+
+.MatchData {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .MatchesRow,
 .MatchesHeader {
@@ -141,6 +152,10 @@ pre {
     height: 50px;
     color: #889dbe;
     background-color: #2d323a;
+}
+
+.ButtonText {
+    display: inline;
 }
 
 #Back {

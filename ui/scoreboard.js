@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { url } from './consts'
+import ParseResults from './parseResults';
 
 
 function Scoreboard() {
@@ -108,12 +109,7 @@ function Scoreboard() {
     useEffect(() => {
         fetch(`${url}/match/${matchId}/parse`).then(res => res.json().then(data => {
             if (data.status === "complete") {
-                setParseResults(
-                    <div>
-                        <p className="MidText">Parse results:</p>
-                        <pre>{JSON.stringify(data.result, null, 2)}</pre>
-                    </div>
-                )
+                setParseResults(ParseResults(data.result))
             } else {
                 setParseResults(<div><p className="MidText">No parse results yet</p> </div >)
             }
@@ -135,12 +131,12 @@ function Scoreboard() {
             <div className='ButtonContainer'>
                 <button className="Button" id="Back">
                     <Link to={`/players/${accountId}`}>
-                        <p>Back to matches</p>
+                        <p className='ButtonText'>Back to matches</p>
                     </Link>
                 </button>
                 <button className="Button" id='Parse' onClick={onParse} style={{ width: "150px" }}>
                     <Link to={`/parse?id=${matchId}`}>
-                        <p>Parse replay</p>
+                        <p className='ButtonText' >Parse replay</p>
                     </Link>
                 </button>
             </div>
