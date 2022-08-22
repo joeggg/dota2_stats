@@ -1,20 +1,19 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { url } from './consts'
 
 
 function Matches(): React.ReactElement {
     const params = useParams();
-    const [playerSummary, setPlayerSummary] = useState(<div></div>);
-    const [matchList, setMatchList] = useState(<div></div>);
+    const [playerSummary, setPlayerSummary] = React.useState(<div></div>);
+    const [matchList, setMatchList] = React.useState(<div></div>);
 
     const accountId: string = params.accountId!;
 
     /**
      *  Player info effect
      */
-    useEffect(() => {
+    React.useEffect(() => {
         fetch(`${url}/player/${accountId}`).then((res) => {
             res.text().then((text) => {
                 const player = JSON.parse(text);
@@ -37,12 +36,12 @@ function Matches(): React.ReactElement {
                 );
             });
         });
-    });
+    }, []);
 
     /**
      *  Match list effect
      */
-    useEffect(() => {
+    React.useEffect(() => {
         fetch(`${url}/player/${accountId}/matches`).then((res) => {
             res.text().then((text) => {
                 const matches = JSON.parse(text);
@@ -164,7 +163,7 @@ function Matches(): React.ReactElement {
                 );
             });
         });
-    });
+    }, []);
 
     return (
         <div className="Page">

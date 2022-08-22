@@ -27,7 +27,7 @@ function Parse(): React.ReactElement {
         const statusTimer = setInterval(checkStatus, 1000);
         const loadTimer = setInterval(loadAnimation, 500);
         return () => { clearInterval(statusTimer); clearInterval(loadTimer); }
-    });
+    }, []);
 
     return (
         <div className="Page">
