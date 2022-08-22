@@ -1,32 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { url } from './consts'
+import React from 'react';
+import * as ReactRouterDOM from 'react-router-dom'
+import { url } from './consts';
 
 
-function Parse() {
-    const [params, _] = useSearchParams();
-    const [display, setDisplay] = useState(<div></div>)
+function Parse(): React.ReactElement {
+    const [params,] = ReactRouterDOM.useSearchParams();
+    const [display, setDisplay] = React.useState(<div></div>);
+    const navigate = ReactRouterDOM.useNavigate();
     const matchId = params.get("id");
-    let waitCount = 0
+    let waitCount = 0;
 
     const checkStatus = async () => {
         const res = await fetch(`${url}/match/${matchId}/parse`);
         const result = await res.json();
         if (result.status !== "queued") {
-            history.back()
+            navigate(-1);
         }
-    }
+    };
 
     const loadAnimation = async () => {
         setDisplay(<p className="MidText">{`Parse in progress${".".repeat(waitCount % 4)}`}</p>);
         waitCount++
-    }
+    };
 
-    useEffect(() => {
+    React.useEffect(() => {
         const statusTimer = setInterval(checkStatus, 1000);
         const loadTimer = setInterval(loadAnimation, 500);
         return () => { clearInterval(statusTimer); clearInterval(loadTimer); }
-    }, []);
+    });
 
     return (
         <div className="Page">

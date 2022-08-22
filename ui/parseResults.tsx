@@ -8,7 +8,9 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js'
+import type { ChartData, ChartOptions } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import * as React from 'react';
 
 
 ChartJS.register(
@@ -21,23 +23,34 @@ ChartJS.register(
     Legend
 );
 
-function ParseResults(result) {
-    const radiant = result.Metadata.Radiant;
-    const dire = result.Metadata.Dire;
-    if (radiant === null || dire === null) {
-        return <p className='MidText' >No metadata for some reason :(</p>
+interface Metadata {
+    radiant?: Team,
+    dire?: Team
+}
+
+interface Team {
+    networthGraph: number[],
+    XPGraph: number[],
+}
+
+function ParseResults(result: any): React.ReactElement {
+    const metadata: Metadata = result.Metadata;
+    const radiant = metadata.radiant;
+    const dire = metadata.dire;
+    if (radiant === undefined || dire === undefined) {
+        return <p className='MidText' > No metadata for some reason : (</p>
     }
-    const size = radiant.NetWorthGraph.length;
+    const size = radiant.networthGraph.length;
     const xAxis = Array.from(Array(size), (_, i) => i + 1)
     const networth = Array.from(
-        Array(size), (_, i) => radiant.NetWorthGraph[i] - dire.NetWorthGraph[i]
+        Array(size), (_, i) => radiant.networthGraph[i] - dire.networthGraph[i]
     );
     const xp = Array.from(
         Array(size), (_, i) => radiant.XPGraph[i] - dire.XPGraph[i]
     );
-    const options = {
-        responsive: false,
-        maintainAspectRatio: false,
+    const options: ChartOptions<'line'> = {
+        responsive: true,
+        maintainAspectRatio: true,
         plugins: {
             legend: {
                 position: "top",
@@ -48,7 +61,7 @@ function ParseResults(result) {
             },
         },
     };
-    const data = {
+    const data: ChartData<'line'> = {
         labels: xAxis,
         datasets: [
             {
@@ -67,7 +80,7 @@ function ParseResults(result) {
     };
 
     return <div>
-        <Line data={data} width={"1000px"} height={"500px"} options={options} className="ParsedGraph" />
+        <Line data={data} options={options} className="ParsedGraph" />
     </div>;
 }
 

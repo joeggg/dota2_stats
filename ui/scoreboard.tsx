@@ -1,31 +1,36 @@
-import { useEffect, useState } from 'react';
+import * as React from 'react'
 import { Link, useParams } from 'react-router-dom';
+
 import { url } from './consts'
 import ParseResults from './parseResults';
 
+interface Match {
+    players: any[],
+    winner: string
+}
 
-function Scoreboard() {
+function Scoreboard(): React.ReactElement {
     const params = useParams();
-    const [matchData, setMatchData] = useState({});
-    const [matchScoreboard, setMatchScoreboard] = useState(<div></div>);
-    const [parseResults, setParseResults] = useState(<div></div>);
+    const [matchData, setMatchData] = React.useState({} as Match);
+    const [matchScoreboard, setMatchScoreboard] = React.useState(<div></div>);
+    const [parseResults, setParseResults] = React.useState(<div></div>);
 
-    const accountId = params.accountId;
-    const matchId = params.matchId;
+    const accountId: string = params.accountId!;
+    const matchId: string = params.matchId!;
 
     /**
      *  Match scoreboard effect
      */
-    useEffect(() => {
+    React.useEffect(() => {
         fetch(`${url}/match/${matchId}?account_id=${accountId}`).then((res) => {
             res.text().then((text) => {
                 const matchObj = JSON.parse(text);
-                const match = matchObj.match;
+                const match: Match = matchObj!.match;
                 // const PlayerDetails = matchObj.player;
                 // Create the scoreboard element
-                const scoreboard = match.players.map((player) => {
+                const scoreboard = match.players.map((player: any) => {
                     const name = 'ScoreRow';
-                    let colour = null;
+                    let colour: string;
                     let id = player.id;
                     if (player.slot === 5 || player.slot === 0) {
                         id = 'GapRow';
@@ -101,12 +106,12 @@ function Scoreboard() {
                 );
             });
         });
-    }, []);
+    });
 
     /**
      * Parser results
      */
-    useEffect(() => {
+    React.useEffect(() => {
         fetch(`${url}/match/${matchId}/parse`).then(res => res.json().then(data => {
             if (data.status === "complete") {
                 setParseResults(ParseResults(data.result))
@@ -114,7 +119,7 @@ function Scoreboard() {
                 setParseResults(<div><p className="MidText">No parse results yet</p> </div >)
             }
         }));
-    }, []);
+    });
 
     const onParse = () => {
         const requestOptions = {

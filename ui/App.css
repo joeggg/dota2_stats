@@ -61,6 +61,7 @@ pre {
 .MatchData {
     margin-left: auto;
     margin-right: auto;
+    width: 1000px;
 }
 
 .MatchesRow,
@@ -87,7 +88,7 @@ pre {
 .ScoreRow,
 .ScoreHeader {
     text-align: left;
-    font-size: 20px;
+    font-size: 15px;
     padding: 2px 15px;
     line-height: 30px;
     border-right: 1px solid #0e0e0f;

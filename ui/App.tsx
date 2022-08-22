@@ -1,12 +1,15 @@
+import * as React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import logo from './dota2.svg';
+
 import './App.css';
 import Main from './main';
 import Matches from './matches';
 import Parse from './parse';
 import Scoreboard from './scoreboard';
 
-function App() {
+import logo from './dota2.svg';
+
+function App(): React.ReactElement {
     return (
         <div className="App">
             <header className="App-header">
