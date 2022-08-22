@@ -24,26 +24,26 @@ ChartJS.register(
 );
 
 interface Metadata {
-    radiant?: Team,
-    dire?: Team
+    Radiant?: Team,
+    Dire?: Team
 }
 
 interface Team {
-    networthGraph: number[],
+    NetWorthGraph: number[],
     XPGraph: number[],
 }
 
 function ParseResults(result: any): React.ReactElement {
     const metadata: Metadata = result.Metadata;
-    const radiant = metadata.radiant;
-    const dire = metadata.dire;
+    const radiant = metadata.Radiant;
+    const dire = metadata.Dire;
     if (radiant === undefined || dire === undefined) {
         return <p className='MidText' > No metadata for some reason : (</p>
     }
-    const size = radiant.networthGraph.length;
+    const size = radiant.NetWorthGraph.length;
     const xAxis = Array.from(Array(size), (_, i) => i + 1)
     const networth = Array.from(
-        Array(size), (_, i) => radiant.networthGraph[i] - dire.networthGraph[i]
+        Array(size), (_, i) => radiant.NetWorthGraph[i] - dire.NetWorthGraph[i]
     );
     const xp = Array.from(
         Array(size), (_, i) => radiant.XPGraph[i] - dire.XPGraph[i]

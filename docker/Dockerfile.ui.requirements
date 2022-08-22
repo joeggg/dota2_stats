@@ -7,6 +7,5 @@ COPY public/ public/
 COPY package.json package-lock.json tsconfig.json ./
 
 RUN npm install -g npm@latest
-RUN ls -lsa src
 RUN npm install --omit=dev
 RUN npm run build
