@@ -56,13 +56,24 @@ pre {
     text-align: center;
 }
 
+@media only screen and (min-width: 768px) {
+    .MatchesTitle {
+        font-size: 30px;
+        border-style: solid;
+    }
+
+    .ResultsTitle {
+        font-size: 30px;
+    }
+}
+
 /* Parse results */
 
 .ParsedGraph {
     margin-top: 50px;
 }
 
-/* Tables */
+/* Table formatting */
 
 .MatchData {
     width: 100%
@@ -89,6 +100,10 @@ pre {
     font-weight: 800;
 }
 
+.MHeroIcon {
+    width: 6vw;
+}
+
 .ScoreRow,
 .ScoreHeader {
     text-align: left;
@@ -113,6 +128,38 @@ pre {
 #GapRow {
     border-top: 30px solid #444a57;
 }
+
+@media only screen and (min-width: 768px) {
+    .MatchData {
+        width: 1000px;
+    }
+
+    .MatchesRow {
+        font-size: 1vw;
+    }
+
+    .MatchesHeader {
+        font-size: 1vw;
+    }
+
+    .ScoreRow {
+        font-size: 20px;
+        padding: 0.3vh 2vw;
+        line-height: 30px;
+    }
+
+    .ScoreHeader {
+        font-size: 20px;
+        padding: 0.3vh 2vw;
+        line-height: 30px;
+    }
+
+    .MHeroIcon {
+        width: 2vw;
+    }
+}
+
+/* KDA bar */
 
 .KDAStat {
     color: #6e7f96;
@@ -145,6 +192,24 @@ pre {
 #Assists {
     background-color: #55596e;
 }
+
+
+@media only screen and (min-width: 768px) {
+    .KDAStat {
+        font-size: 1vw;
+        bottom: 2.8vw;
+    }
+
+    .KDA {
+        block-size: 0.3vw;
+    }
+
+    .Bar {
+        block-size: 0.3vw;
+    }
+}
+
+/* Scoreboard specific columns formatting */
 
 .Level {
     color: #cbcbcb;
@@ -268,18 +333,6 @@ a {
         width: 5%;
     }
 
-    .MatchData {
-        width: 1000px;
-    }
-
-    .MatchesRow {
-        font-size: 1vw;
-    }
-
-    .MatchesHeader {
-        font-size: 1vw;
-    }
-
     .KDAStat {
         font-size: 1vw;
         bottom: 2.8vw;
@@ -292,28 +345,6 @@ a {
     .Bar {
         block-size: 0.3vw;
     }
-
-    .ScoreRow {
-        font-size: 20px;
-        padding: 0.3vh 2vw;
-        line-height: 30px;
-    }
-
-    .ScoreHeader {
-        font-size: 20px;
-        padding: 0.3vh 2vw;
-        line-height: 30px;
-    }
-
-    .MatchesTitle {
-        font-size: 30px;
-        border-style: solid;
-    }
-
-    .ResultsTitle {
-        font-size: 30px;
-    }
-
 }
 
 /* App header formatting */

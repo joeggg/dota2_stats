@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { url } from './consts'
+import { heroIconURI, url } from './consts'
+
+const heroNames = require('./hero_icon_names.json');
 
 
 function Matches(): React.ReactElement {
@@ -49,47 +51,52 @@ function Matches(): React.ReactElement {
                 const matchListBody = matches.map((matchData: any) => {
                     const match = matchData!.match;
                     const player = matchData!.player;
-                    const total = player!.kills + player!.deaths + player!.assists;
+                    const uri = heroNames[player.hero] ? heroIconURI.replace('*', heroNames[player.hero]) : '';
+                    const total = player.kills + player.deaths + player.assists;
                     return (
-                        <tr key={match!.match_id}>
+                        <tr key={match.match_id}>
                             <td className="MatchesRow">
+                                <img
+                                    className='MatchesHeroIcon'
+                                    src={uri}
+                                />
                                 <Link
                                     to={`match/${match!.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {player!.hero}
+                                    {player.hero}
                                 </Link>
                             </td>
                             <td
                                 className="MatchesRow"
                                 style={{
                                     color:
-                                        player!.result === 'won'
+                                        player.result === 'won'
                                             ? 'darkgreen'
                                             : 'darkred',
                                 }}
                             >
                                 <Link
-                                    to={`match/${match!.match_id}`}
+                                    to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {player!.result}
+                                    {player.result}
                                 </Link>
                             </td>
                             <td className="MatchesRow">
                                 <Link
-                                    to={`match/${match!.match_id}`}
+                                    to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {match!.game_mode}
+                                    {match.game_mode}
                                 </Link>
                             </td>
                             <td className="MatchesRow">
                                 <Link
-                                    to={`match/${match!.match_id}`}
+                                    to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {match!.length}
+                                    {match.length}
                                 </Link>
                             </td>
                             <td className="MatchesRow">
@@ -98,46 +105,46 @@ function Matches(): React.ReactElement {
                                         className="Bar"
                                         id="Kills"
                                         style={{
-                                            width: `${(100 * player!.kills) / total
+                                            width: `${(100 * player.kills) / total
                                                 }%`,
                                         }}
                                     >
                                         <p className="KDAStat">
-                                            {player!.kills}
+                                            {player.kills}
                                         </p>
                                     </div>
                                     <div
                                         className="Bar"
                                         id="Deaths"
                                         style={{
-                                            width: `${(100 * player!.deaths) / total
+                                            width: `${(100 * player.deaths) / total
                                                 }%`,
                                         }}
                                     >
                                         <p className="KDAStat">
-                                            {player!.deaths}
+                                            {player.deaths}
                                         </p>
                                     </div>
                                     <div
                                         className="Bar"
                                         id="Assists"
                                         style={{
-                                            width: `${(100 * player!.assists) / total
+                                            width: `${(100 * player.assists) / total
                                                 }%`,
                                         }}
                                     >
                                         <p className="KDAStat">
-                                            {player!.assists}
+                                            {player.assists}
                                         </p>
                                     </div>
                                 </div>
                             </td>
                             <td className="MatchesRow">
                                 <Link
-                                    to={`match/${match!.match_id}`}
+                                    to={`match/${match.match_id}`}
                                     className="MatchLink"
                                 >
-                                    {match!.start_time}
+                                    {match.start_time}
                                 </Link>
                             </td>
                         </tr>
