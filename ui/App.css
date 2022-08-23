@@ -59,8 +59,7 @@ pre {
 /* Parse results */
 
 .ParsedGraph {
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 10px;
 }
 
 /* Tables */
@@ -157,6 +156,7 @@ pre {
     height: 50px;
     color: #889dbe;
     background-color: #2d323a;
+    border-color: #535d72;
 }
 
 .ButtonText {

@@ -141,7 +141,7 @@ function Scoreboard(): React.ReactElement {
                         <p className='ButtonText'>Back to matches</p>
                     </Link>
                 </button>
-                <button className="Button" id='Parse' onClick={onParse} style={{ width: "150px" }}>
+                <button className="Button" id='Parse' onClick={onParse}>
                     <Link to={`/parse?id=${matchId}`}>
                         <p className='ButtonText' >Parse replay</p>
                     </Link>
