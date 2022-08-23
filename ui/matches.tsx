@@ -57,7 +57,7 @@ function Matches(): React.ReactElement {
                         <tr key={match.match_id}>
                             <td className="MatchesRow">
                                 <img
-                                    className='MatchesHeroIcon'
+                                    className='MHeroIcon'
                                     src={uri}
                                 />
                                 <Link
