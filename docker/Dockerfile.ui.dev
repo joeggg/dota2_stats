@@ -1,0 +1,15 @@
+FROM node:18.7.0-slim
+
+WORKDIR /ui
+
+RUN npm install -g serve
+RUN npm install -g npm@latest
+
+COPY package.json package-lock.json tsconfig.json ./
+RUN npm install --omit=dev
+
+COPY ui/ src/
+COPY public/ public/
+
+CMD [ "npm", "run", "start" ]
+EXPOSE 3000

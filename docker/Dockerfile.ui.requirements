@@ -1,0 +1,11 @@
+FROM node:18.7.0-slim
+
+WORKDIR /build
+
+COPY ui/ src/
+COPY public/ public/
+COPY package.json package-lock.json tsconfig.json ./
+
+RUN npm install -g npm@latest
+RUN npm install --omit=dev
+RUN npm run build

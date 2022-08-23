@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Link } from 'react-router-dom';
 
 function Main() {
@@ -10,7 +11,7 @@ function Main() {
     const links = Object.entries(idList).map(([name, id]) => {
         return (
             <h2 key={id} className="Link">
-                <Link to={`${id}`}>
+                <Link to={`players/${id}`}>
                     {name}
                     <br />
                 </Link>

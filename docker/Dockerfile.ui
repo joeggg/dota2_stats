@@ -1,0 +1,16 @@
+FROM dota2stats-ui-requirements:latest as build
+FROM node:18.7.0-slim
+
+RUN npm install -g serve
+
+WORKDIR /ui
+RUN groupadd ui && useradd -m -d /ui -g ui ui
+RUN chown -R ui /ui && chmod -R 750 /ui
+
+COPY public/ public/
+COPY --from=build /build/node_modules node_modules/
+COPY --from=build /build/build build/
+
+USER ui
+CMD [ "serve", "-s", "build" ]
+EXPOSE 3000

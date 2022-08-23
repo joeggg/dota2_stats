@@ -1,0 +1,15 @@
+FROM golang:alpine3.16
+
+WORKDIR /parser
+
+RUN addgroup parser && adduser -D -h /parser -G parser parser
+RUN chown -R parser /parser && chmod -R 750 /parser
+USER parser
+
+COPY parser/. ./
+RUN mkdir secret
+COPY secret/steam_credentials.txt secret/.
+
+RUN go build -o run *.go
+
+CMD [ "./run" ]
