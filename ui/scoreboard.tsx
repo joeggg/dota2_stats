@@ -85,24 +85,26 @@ function Scoreboard(): React.ReactElement {
                 // Set the match scoreboard state and current display defaults to match list
                 setMatchData(match);
                 setMatchScoreboard(
-                    <table cellSpacing={0} className="Matchdata">
-                        <thead>
-                            <tr>
-                                <th className="ScoreHeader">Hero</th>
-                                <th className="ScoreHeader">Level</th>
-                                <th className="ScoreHeader">Kills</th>
-                                <th className="ScoreHeader">Deaths</th>
-                                <th className="ScoreHeader">Assists</th>
-                                <th className="ScoreHeader">Net worth</th>
-                                <th className="ScoreHeader">GPM</th>
-                                <th className="ScoreHeader">XPM</th>
-                                <th className="ScoreHeader">Hero damage</th>
-                                <th className="ScoreHeader">Tower damage</th>
-                                <th className="ScoreHeader">Hero healing</th>
-                            </tr>
-                        </thead>
-                        <tbody>{scoreboard}</tbody>
-                    </table>
+                    <div>
+                        <table cellSpacing={0} className="MatchData Centre" >
+                            <thead>
+                                <tr>
+                                    <th className="ScoreHeader">Hero</th>
+                                    <th className="ScoreHeader">Level</th>
+                                    <th className="ScoreHeader">Kills</th>
+                                    <th className="ScoreHeader">Deaths</th>
+                                    <th className="ScoreHeader">Assists</th>
+                                    <th className="ScoreHeader">Net worth</th>
+                                    <th className="ScoreHeader">GPM</th>
+                                    <th className="ScoreHeader">XPM</th>
+                                    <th className="ScoreHeader">Hero damage</th>
+                                    <th className="ScoreHeader">Tower damage</th>
+                                    <th className="ScoreHeader">Hero healing</th>
+                                </tr>
+                            </thead>
+                            <tbody>{scoreboard}</tbody>
+                        </table>
+                    </div>
                 );
             });
         });
@@ -145,7 +147,7 @@ function Scoreboard(): React.ReactElement {
                     </Link>
                 </button>
             </div>
-            <p className="MatchesTitle">Match scoreboard:</p>
+            <p className="MatchesTitle">Match scoreboard</p>
             <p
                 className="ResultsTitle"
                 style={{

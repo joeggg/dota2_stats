@@ -50,14 +50,14 @@ function ParseResults(result: any): React.ReactElement {
     );
     const options: ChartOptions<'line'> = {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
-                position: "top",
+                position: 'top',
             },
             title: {
                 display: true,
-                text: "Advantage graph",
+                text: 'Advantage graph',
             },
         },
     };
@@ -65,22 +65,22 @@ function ParseResults(result: any): React.ReactElement {
         labels: xAxis,
         datasets: [
             {
-                label: "Net worth advantage",
+                label: 'Net worth advantage',
                 data: networth,
-                borderColor: "rgb(255, 216, 107)",
+                borderColor: 'rgb(255, 216, 107)',
                 backgroundColor: 'rgba(255, 216, 107, 0.5)',
             },
             {
-                label: "XP advantage",
+                label: 'XP advantage',
                 data: xp,
-                borderColor: "rgb(99, 255, 198)",
+                borderColor: 'rgb(99, 255, 198)',
                 backgroundColor: 'rgba(76, 207, 160, 0.5)',
             },
         ]
     };
 
-    return <div>
-        <Line data={data} options={options} className="ParsedGraph" />
+    return <div className='ParsedGraph Centre'>
+        <Line data={data} style={{ height: '400px' }} options={options} />
     </div>;
 }
 
