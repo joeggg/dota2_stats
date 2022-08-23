@@ -41,10 +41,10 @@ pre {
 /* Various titles on pages */
 
 .MatchesTitle {
-    color: #295579;
-    font-size: 30px;
-    border-width: 5px;
-    border-color: #405f79;
+    color: #bbe1ff;
+    opacity: 50%;
+    background: linear-gradient(to right, #295579 0%, #0099ff 100%);
+    font-size: 20px;
     border-style: solid;
     margin-left: auto;
     margin-right: auto;
@@ -52,20 +52,20 @@ pre {
 }
 
 .ResultsTitle {
-    font-size: 23px;
+    font-size: 20px;
     text-align: center;
 }
 
 /* Parse results */
 
 .ParsedGraph {
-    margin-top: 10px;
+    margin-top: 50px;
 }
 
 /* Tables */
 
 .MatchData {
-    width: 1000px
+    width: 100%
 }
 
 .MatchesRow,
@@ -92,9 +92,8 @@ pre {
 .ScoreRow,
 .ScoreHeader {
     text-align: left;
-    font-size: 20px;
-    padding: 0.3vh 2vw;
-    line-height: 30px;
+    padding: 0.3vh 1vw;
+    line-height: 10px;
     border-bottom: 2px solid #444a57;
     border-collapse: collapse;
     background-color: #282c34;
@@ -102,10 +101,12 @@ pre {
 }
 
 .ScoreRow {
+    font-size: 10px;
     font-weight: 600;
 }
 
 .ScoreHeader {
+    font-size: 8px;
     font-weight: 800;
 }
 
@@ -145,6 +146,26 @@ pre {
     background-color: #55596e;
 }
 
+.Level {
+    color: #cbcbcb;
+}
+
+.Kills {
+    color: rgb(51 131 48);
+}
+
+.Deaths {
+    color: rgb(137 56 56);
+}
+
+.Assists {
+    color: #495a7a;
+}
+
+.NetWorth {
+    color: rgb(139 126 56);
+}
+
 /* Buttons and links */
 
 .ButtonContainer {
@@ -152,8 +173,8 @@ pre {
 }
 
 .Button {
-    width: 200px;
-    height: 50px;
+    width: 100px;
+    height: 30px;
     color: #889dbe;
     background-color: #2d323a;
     border-color: #535d72;
@@ -161,7 +182,21 @@ pre {
 
 .ButtonText {
     display: inline;
+    font-size: 10px;
 }
+
+@media only screen and (min-width: 768px) {
+    .Button {
+        width: 200px;
+        height: 50px;
+    }
+
+    .ButtonText {
+        font-size: 20px;
+    }
+}
+
+
 
 #Back {
     margin-left: 20px;
@@ -233,6 +268,10 @@ a {
         width: 5%;
     }
 
+    .MatchData {
+        width: 1000px;
+    }
+
     .MatchesRow {
         font-size: 1vw;
     }
@@ -253,6 +292,28 @@ a {
     .Bar {
         block-size: 0.3vw;
     }
+
+    .ScoreRow {
+        font-size: 20px;
+        padding: 0.3vh 2vw;
+        line-height: 30px;
+    }
+
+    .ScoreHeader {
+        font-size: 20px;
+        padding: 0.3vh 2vw;
+        line-height: 30px;
+    }
+
+    .MatchesTitle {
+        font-size: 30px;
+        border-style: solid;
+    }
+
+    .ResultsTitle {
+        font-size: 30px;
+    }
+
 }
 
 /* App header formatting */

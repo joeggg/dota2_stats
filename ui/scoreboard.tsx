@@ -29,7 +29,6 @@ function Scoreboard(): React.ReactElement {
                 // const PlayerDetails = matchObj.player;
                 // Create the scoreboard element
                 const scoreboard = match.players.map((player: any) => {
-                    const name = 'ScoreRow';
                     let colour: string;
                     let id = player.id;
                     if (player.slot === 5 || player.slot === 0) {
@@ -43,40 +42,37 @@ function Scoreboard(): React.ReactElement {
                     return (
                         <tr key={player.id}>
                             <td
-                                className={name}
+                                className='ScoreRow Hero'
                                 id={id}
                                 style={{ color: colour }}
                             >
                                 {player.hero}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow Level' id={id}>
                                 {player.level}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow Kills' id={id}>
                                 {player.kills}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow Deaths' id={id}>
                                 {player.deaths}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow Assists' id={id}>
                                 {player.assists}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow NetWorth' id={id}>
                                 {player.net_worth}
                             </td>
-                            <td className={name} id={id}>
-                                {player.gpm}
+                            <td className='ScoreRow GXpm' id={id}>
+                                {`${player.gpm}/${player.xpm}`}
                             </td>
-                            <td className={name} id={id}>
-                                {player.xpm}
-                            </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow Dmg' id={id}>
                                 {player.hero_damage}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow TDmg' id={id}>
                                 {player.tower_damage}
                             </td>
-                            <td className={name} id={id}>
+                            <td className='ScoreRow Healing' id={id}>
                                 {player.healing}
                             </td>
                         </tr>
@@ -89,17 +85,16 @@ function Scoreboard(): React.ReactElement {
                         <table cellSpacing={0} className="MatchData Centre" >
                             <thead>
                                 <tr>
-                                    <th className="ScoreHeader">Hero</th>
-                                    <th className="ScoreHeader">Level</th>
-                                    <th className="ScoreHeader">Kills</th>
-                                    <th className="ScoreHeader">Deaths</th>
-                                    <th className="ScoreHeader">Assists</th>
-                                    <th className="ScoreHeader">Net worth</th>
-                                    <th className="ScoreHeader">GPM</th>
-                                    <th className="ScoreHeader">XPM</th>
-                                    <th className="ScoreHeader">Hero damage</th>
-                                    <th className="ScoreHeader">Tower damage</th>
-                                    <th className="ScoreHeader">Hero healing</th>
+                                    <th className="ScoreHeader Hero">Hero</th>
+                                    <th className="ScoreHeader Level">Level</th>
+                                    <th className="ScoreHeader Kills">Kills</th>
+                                    <th className="ScoreHeader Deaths">Deaths</th>
+                                    <th className="ScoreHeader Assists">Assists</th>
+                                    <th className="ScoreHeader NetWorth">Net worth</th>
+                                    <th className="ScoreHeader GXpm">GPM/XPM</th>
+                                    <th className="ScoreHeader Dmg">Hero damage</th>
+                                    <th className="ScoreHeader TDmg">Tower damage</th>
+                                    <th className="ScoreHeader Healing">Hero healing</th>
                                 </tr>
                             </thead>
                             <tbody>{scoreboard}</tbody>
@@ -151,7 +146,7 @@ function Scoreboard(): React.ReactElement {
             <p
                 className="ResultsTitle"
                 style={{
-                    color: matchData.winner === 'Radiant' ? 'green' : 'red',
+                    color: matchData.winner === 'Radiant' ? 'green' : 'darkred',
                 }}
             >
                 {matchData.winner} win!
