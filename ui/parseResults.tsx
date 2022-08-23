@@ -43,10 +43,10 @@ function ParseResults(result: any): React.ReactElement {
     const size = radiant.NetWorthGraph.length;
     const xAxis = Array.from(Array(size), (_, i) => i + 1)
     const networth = Array.from(
-        Array(size), (_, i) => radiant.NetWorthGraph[i] - dire.NetWorthGraph[i]
+        Array(size), (_, i) => 10 * (radiant.NetWorthGraph[i] - dire.NetWorthGraph[i])
     );
     const xp = Array.from(
-        Array(size), (_, i) => radiant.XPGraph[i] - dire.XPGraph[i]
+        Array(size), (_, i) => 10 * (radiant.XPGraph[i] - dire.XPGraph[i])
     );
     const options: ChartOptions<'line'> = {
         responsive: true,

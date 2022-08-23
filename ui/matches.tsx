@@ -36,7 +36,7 @@ function Matches(): React.ReactElement {
                 );
             });
         });
-    }, []);
+    }, [accountId]);
 
     /**
      *  Match list effect
@@ -163,7 +163,7 @@ function Matches(): React.ReactElement {
                 );
             });
         });
-    }, []);
+    }, [accountId]);
 
     return (
         <div className="Page">

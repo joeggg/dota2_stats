@@ -49,9 +49,10 @@ func (w *Worker) listen() {
 }
 
 func (w *Worker) processReplay(matchId uint64) {
+	key := fmt.Sprintf("%s%d", resultKeyPrefix, matchId)
 	fname, err := w.downloadReplay(matchId)
 	if err != nil {
-		panic(err)
+		w.handleFailure(key, err)
 	}
 	defer os.Remove(fname)
 
@@ -59,26 +60,29 @@ func (w *Worker) processReplay(matchId uint64) {
 	rp := mango.WithDefaultGatherers(mango.NewReplayParser())
 	err = rp.Initialise(fname)
 	if err != nil {
-		panic(err)
+		w.handleFailure(key, err)
 	}
 	_, err = rp.ParseReplay()
 	if err != nil {
-		panic(err)
+		w.handleFailure(key, err)
 	}
 	jsonStr, _ := json.MarshalIndent(rp.GetResults(), "", "  ")
 	w.lg.Infof("Finished parsing %s\n", fname)
 
-	key := resultKeyPrefix + fmt.Sprint(matchId)
 	err = w.r.Set(w.ctx, key, string(jsonStr), resultExpiry).Err()
 	if err != nil {
-		panic(err)
+		w.handleFailure(key, err)
 	}
 }
 
+func (w *Worker) handleFailure(key string, err error) {
+	w.lg.Errorln(err)
+	w.r.Del(w.ctx, key)
+}
+
 func (w *Worker) downloadReplay(matchId uint64) (string, error) {
-	ctx := context.Background()
 	w.lg.Infof("Requesting match details for %d\n", matchId)
-	matchResp, err := w.dc.RequestMatchDetails(ctx, matchId)
+	matchResp, err := w.dc.RequestMatchDetails(w.ctx, matchId)
 	if err != nil {
 		return "", err
 	}

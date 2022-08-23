@@ -106,7 +106,7 @@ function Scoreboard(): React.ReactElement {
                 );
             });
         });
-    }, []);
+    }, [matchId, accountId]);
 
     /**
      * Parser results
@@ -119,7 +119,7 @@ function Scoreboard(): React.ReactElement {
                 setParseResults(<div><p className="MidText">No parse results yet</p> </div >)
             }
         }));
-    }, []);
+    }, [matchId]);
 
     const onParse = () => {
         const requestOptions = {
