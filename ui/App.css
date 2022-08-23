@@ -72,7 +72,7 @@ pre {
 .MatchesRow,
 .MatchesHeader {
     text-align: left;
-    font-size: 20px;
+    font-size: 2vw;
     padding: 0.5vh 4vw;
     line-height: 200%;
     border-bottom: 2px solid #444a57;
@@ -116,21 +116,21 @@ pre {
 
 .KDAStat {
     color: #6e7f96;
-    font-size: 13px;
+    font-size: 2vw;
     text-align: center;
     position: relative;
-    bottom: 900%;
+    bottom: 6vw;
 }
 
 .KDA {
     border: 1px solid rgb(0, 0, 0);
-    width: 150px;
-    block-size: 5px;
+    width: 10vw;
+    block-size: 0.5vw;
     margin-top: 7%;
 }
 
 .Bar {
-    block-size: 5px;
+    block-size: 0.5vw;
     float: left;
 }
 
@@ -231,6 +231,27 @@ a {
 
     .avatar {
         width: 5%;
+    }
+
+    .MatchesRow {
+        font-size: 1vw;
+    }
+
+    .MatchesHeader {
+        font-size: 1vw;
+    }
+
+    .KDAStat {
+        font-size: 1vw;
+        bottom: 2.8vw;
+    }
+
+    .KDA {
+        block-size: 0.3vw;
+    }
+
+    .Bar {
+        block-size: 0.3vw;
     }
 }
 
