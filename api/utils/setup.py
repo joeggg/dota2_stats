@@ -107,7 +107,7 @@ def sync_request(
             data = resp.json()
             return data
         except HTTPError as exc:
-            logging.debug(exc.headers)
+            logging.exception(exc)
             logging.error(f"{exc}: Attempt {attempt+1} of {attempts}")
             time.sleep(0.2)
             continue

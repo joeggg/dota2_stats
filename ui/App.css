@@ -104,6 +104,10 @@ pre {
     width: 6vw;
 }
 
+.SHeroIcon {
+    width: 6vw;
+}
+
 .ScoreRow,
 .ScoreHeader {
     text-align: left;
@@ -156,6 +160,12 @@ pre {
 
     .MHeroIcon {
         width: 2vw;
+        margin-right: 10px;
+    }
+
+    .SHeroIcon {
+        width: 3vw;
+        margin-right: 10px;
     }
 }
 
@@ -196,8 +206,8 @@ pre {
 
 @media only screen and (min-width: 768px) {
     .KDAStat {
-        font-size: 1vw;
-        bottom: 2.8vw;
+        font-size: 0.9vw;
+        bottom: 2.6vw;
     }
 
     .KDA {

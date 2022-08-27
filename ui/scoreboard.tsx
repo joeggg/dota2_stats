@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { Link, useParams } from 'react-router-dom';
 
-import { url } from './consts'
 import ParseResults from './parseResults';
+import { heroIconURI, url } from './consts'
+const heroNames = require('./hero_icon_names.json')
+
 
 interface Match {
     players: any[],
@@ -29,6 +31,7 @@ function Scoreboard(): React.ReactElement {
                 // const PlayerDetails = matchObj.player;
                 // Create the scoreboard element
                 const scoreboard = match.players.map((player: any) => {
+                    const uri = heroNames[player.hero] ? heroIconURI.replace('*', heroNames[player.hero]) : '';
                     let colour: string;
                     let id = player.id;
                     if (player.slot === 5 || player.slot === 0) {
@@ -46,7 +49,10 @@ function Scoreboard(): React.ReactElement {
                                 id={id}
                                 style={{ color: colour }}
                             >
-                                {player.hero}
+                                <img
+                                    className='SHeroIcon'
+                                    src={uri}
+                                />
                             </td>
                             <td className='ScoreRow Level' id={id}>
                                 {player.level}
@@ -82,19 +88,19 @@ function Scoreboard(): React.ReactElement {
                 setMatchData(match);
                 setMatchScoreboard(
                     <div>
-                        <table cellSpacing={0} className="MatchData Centre" >
+                        <table cellSpacing={0} className='MatchData Centre' >
                             <thead>
                                 <tr>
-                                    <th className="ScoreHeader Hero">Hero</th>
-                                    <th className="ScoreHeader Level">Level</th>
-                                    <th className="ScoreHeader Kills">Kills</th>
-                                    <th className="ScoreHeader Deaths">Deaths</th>
-                                    <th className="ScoreHeader Assists">Assists</th>
-                                    <th className="ScoreHeader NetWorth">Net worth</th>
-                                    <th className="ScoreHeader GXpm">GPM/XPM</th>
-                                    <th className="ScoreHeader Dmg">Hero damage</th>
-                                    <th className="ScoreHeader TDmg">Tower damage</th>
-                                    <th className="ScoreHeader Healing">Hero healing</th>
+                                    <th className='ScoreHeader Hero'>Hero</th>
+                                    <th className='ScoreHeader Level'>Level</th>
+                                    <th className='ScoreHeader Kills'>Kills</th>
+                                    <th className='ScoreHeader Deaths'>Deaths</th>
+                                    <th className='ScoreHeader Assists'>Assists</th>
+                                    <th className='ScoreHeader NetWorth'>Net worth</th>
+                                    <th className='ScoreHeader GXpm'>GPM/XPM</th>
+                                    <th className='ScoreHeader Dmg'>Hero damage</th>
+                                    <th className='ScoreHeader TDmg'>Tower damage</th>
+                                    <th className='ScoreHeader Healing'>Hero healing</th>
                                 </tr>
                             </thead>
                             <tbody>{scoreboard}</tbody>
@@ -110,10 +116,10 @@ function Scoreboard(): React.ReactElement {
      */
     React.useEffect(() => {
         fetch(`${url}/match/${matchId}/parse`).then(res => res.json().then(data => {
-            if (data.status === "complete") {
+            if (data.status === 'complete') {
                 setParseResults(ParseResults(data.result))
             } else {
-                setParseResults(<div><p className="MidText">No parse results yet</p> </div >)
+                setParseResults(<div><p className='MidText'>No parse results yet</p> </div >)
             }
         }));
     }, [matchId]);
@@ -129,22 +135,22 @@ function Scoreboard(): React.ReactElement {
     };
 
     return (
-        <div className="Page">
+        <div className='Page'>
             <div className='ButtonContainer'>
-                <button className="Button" id="Back">
+                <button className='Button' id='Back'>
                     <Link to={`/players/${accountId}`}>
                         <p className='ButtonText'>Back to matches</p>
                     </Link>
                 </button>
-                <button className="Button" id='Parse' onClick={onParse}>
+                <button className='Button' id='Parse' onClick={onParse}>
                     <Link to={`/parse?id=${matchId}`}>
                         <p className='ButtonText' >Parse replay</p>
                     </Link>
                 </button>
             </div>
-            <p className="MatchesTitle">Match scoreboard</p>
+            <p className='MatchesTitle'>Match scoreboard</p>
             <p
-                className="ResultsTitle"
+                className='ResultsTitle'
                 style={{
                     color: matchData.winner === 'Radiant' ? 'green' : 'darkred',
                 }}
