@@ -9,19 +9,19 @@ function Parse(): React.ReactElement {
     const navigate = ReactRouterDOM.useNavigate();
 
     React.useEffect(() => {
-        const matchId = params.get("id");
+        const matchId = params.get('id');
         let waitCount = 0;
 
         const checkStatus = async () => {
             const res = await fetch(`${url}/match/${matchId}/parse`);
             const result = await res.json();
-            if (result.status !== "queued") {
+            if (result.status !== 'queued') {
                 navigate(-1);
             }
         };
 
         const loadAnimation = async () => {
-            setDisplay(<p className="MidText">{`Parse in progress${".".repeat(waitCount % 4)}`}</p>);
+            setDisplay(<p className='MidText'>{`Parse in progress${'.'.repeat(waitCount % 4)}`}</p>);
             waitCount++
         };
 
@@ -31,7 +31,7 @@ function Parse(): React.ReactElement {
     }, [navigate, params]);
 
     return (
-        <div className="Page">
+        <div className='Page'>
             {display}
         </div>
     );

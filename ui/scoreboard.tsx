@@ -52,6 +52,7 @@ function Scoreboard(): React.ReactElement {
                                 <img
                                     className='SHeroIcon'
                                     src={uri}
+                                    alt=''
                                 />
                             </td>
                             <td className='ScoreRow Level' id={id}>

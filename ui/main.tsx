@@ -11,7 +11,7 @@ function Main(): React.ReactElement {
     };
     const links = Object.entries(idList).map(([name, id]) => {
         return (
-            <h2 key={id} className="Link">
+            <h2 key={id} className='Link'>
                 <Link to={`players/${id}`}>
                     {name}
                     <br />
@@ -19,7 +19,7 @@ function Main(): React.ReactElement {
             </h2>
         );
     });
-    return <div className="Page">{links}</div>;
+    return <div className='Page'>{links}</div>;
 }
 
 export default Main;
