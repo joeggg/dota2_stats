@@ -6,10 +6,11 @@ import sys
 import time
 from typing import Awaitable, Callable, Optional
 
-from cachetools import TTLCache
 from requests import HTTPError, request
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+
+from .cache import TTLCache
 
 
 app = FastAPI()

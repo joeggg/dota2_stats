@@ -2,7 +2,6 @@
     Fetching and processing match data with the Steam API
 """
 import asyncio
-import copy
 import logging
 from datetime import datetime
 from typing import List, Optional
@@ -78,7 +77,7 @@ async def get_match(match_id: str, account_id: Optional[str] = None) -> dict:
     # Get match data from cache or API
     if match_id in StaticObjects.CACHE:
         logging.debug("Found cached match data for match %s", match_id)
-        match = copy.deepcopy(StaticObjects.CACHE[match_id])
+        match = StaticObjects.CACHE[match_id]
     else:
         logging.debug("Querying for match %s", match_id)
         match = await fetch_match_data(match_id)
@@ -134,7 +133,7 @@ async def fetch_match_data(match_id: str) -> dict:
         "cluster": match.get("cluster"),
         "players": player_details,
     }
-    StaticObjects.CACHE[match_id] = copy.deepcopy(match_out)
+    StaticObjects.CACHE[match_id] = match_out
     return match_out
 
 

@@ -2,21 +2,13 @@
     Useful tools
 """
 import asyncio
-import logging
 from datetime import datetime
+import logging
 from typing import Optional, Tuple
 
 from aiohttp import ClientError, ClientSession
-from redis import Redis
 
 from .setup import StaticObjects
-
-REDIS_HOST = "redis"
-REDIS_PORT = 6379
-
-
-def get_redis() -> Redis:
-    return Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
 
 async def async_request(
