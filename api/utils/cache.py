@@ -23,7 +23,7 @@ def retry(func: Callable) -> Callable:
                 return func(*args, **kwargs)
             except RedisError as exc:
                 logging.error("Failed to cache to Redis (attempt %s): %s. Retrying", i, exc)
-        raise exc
+        raise
 
     return wrapper
 
@@ -43,7 +43,7 @@ class TTLCache:
     def __len__(self) -> int:
         return len(self.keys())
 
-    def __getitem__(self, key: str) -> str:
+    def __getitem__(self, key: str) -> dict:
         if (item := self.get(key)) is None:
             raise KeyError
         return item
@@ -63,7 +63,7 @@ class TTLCache:
         return f"{self.prefix}:{key}"
 
     @retry
-    def set(self, key: str, value: dict, ttl: int | None = None) -> bool:
+    def set(self, key: str, value: dict, ttl: int | None = None) -> bool | None:
         """Set a key to a dict value in Redis"""
         while len(self) >= self.capacity:
             self.pop()

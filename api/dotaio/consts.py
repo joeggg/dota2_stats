@@ -10,7 +10,7 @@ STEAM64_MAX_ID = 76561197960265728
 STEAM32_ANON_ID = 4294967295
 
 GAME_MODES = {
-    0: None,
+    0: "Unknown",
     1: "All Pick",
     2: "Captain's Mode",
     3: "Random Draft",

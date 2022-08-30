@@ -6,9 +6,9 @@ import sys
 import time
 from typing import Awaitable, Callable, Optional
 
-from requests import HTTPError, request
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from requests import HTTPError, request
 
 from .cache import TTLCache
 
@@ -38,8 +38,8 @@ class StaticObjects:
     """Immutable objects needed for queries and data processing"""
 
     CACHE = TTLCache(1000, 300)
-    HEROES = {}
-    ITEMS = {}
+    HEROES: dict[int, str | None] = {}
+    ITEMS: dict[int, dict[str, str] | None] = {}
     KEY = ""
 
     @classmethod

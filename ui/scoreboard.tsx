@@ -27,7 +27,7 @@ function Scoreboard(): React.ReactElement {
         fetch(`${url}/match/${matchId}?account_id=${accountId}`).then((res) => {
             res.text().then((text) => {
                 const matchObj = JSON.parse(text);
-                const match: Match = matchObj!.match;
+                const match: Match = matchObj!.details;
                 // const PlayerDetails = matchObj.player;
                 // Create the scoreboard element
                 const scoreboard = match.players.map((player: any) => {

@@ -49,7 +49,7 @@ function Matches(): React.ReactElement {
                 const matches = JSON.parse(text);
                 // Create the match history element
                 const matchListBody = matches.map((matchData: any) => {
-                    const match = matchData!.match;
+                    const match = matchData!.details;
                     const player = matchData!.player;
                     const uri = heroNames[player.hero] ? heroIconURI.replace('*', heroNames[player.hero]) : '';
                     const total = player.kills + player.deaths + player.assists;
