@@ -4,15 +4,13 @@
 
 import logging
 
-from .utils import app, setup_logger, StaticObjects
-from .routes import match, player
+from .app import create_app
+from .utils import set_up_logger, StaticObjects
 
 
-setup_logger()
+set_up_logger()
 StaticObjects.setup()
-
-app.include_router(match.router)
-app.include_router(player.router)
+app = create_app()
 
 
 @app.get("/status")

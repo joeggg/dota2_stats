@@ -10,6 +10,8 @@ from fastapi import HTTPException
 from fastapi.routing import APIRouter
 from pydantic import BaseModel
 
+from api.dotaio.types import MatchData
+
 from ..dotaio import queries
 from ..utils import get_redis
 
@@ -34,20 +36,22 @@ class ParseResponse(BaseModel):
 
 
 @router.get("/{match_id}")
-async def match(match_id: str, account_id: str | None = None) -> dict:
+async def match(match_id: str, account_id: str | None = None) -> MatchData:
     """Return formatted match data to the frontend"""
     if len(match_id) != 10:
-        raise HTTPException(status_code=400, detail="Invalid match ID")
+        raise HTTPException(400, "Invalid match ID")
 
     logging.info("Fetching match data for match %s", match_id)
     match_data = await queries.get_match(match_id, account_id)
+    if not match_data:
+        raise HTTPException(404)
     return match_data
 
 
 @router.get("/{match_id}/parse", response_model=ParseResponse)
 def get_parse(match_id: str):
     if len(match_id) != 10:
-        raise HTTPException(status_code=400, detail="Invalid match ID")
+        raise HTTPException(400, "Invalid match ID")
 
     r = get_redis()
     result = r.get(f"{PARSER_RESULT}{match_id}")
@@ -64,7 +68,7 @@ def get_parse(match_id: str):
 @router.post("/{match_id}/parse", response_model=ParseResponse)
 def post_parse(match_id: str):
     if len(match_id) != 10:
-        raise HTTPException(status_code=400, detail="Invalid match ID")
+        raise HTTPException(400, "Invalid match ID")
 
     r = get_redis()
     result_key = f"{PARSER_RESULT}{match_id}"

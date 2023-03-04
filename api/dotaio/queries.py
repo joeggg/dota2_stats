@@ -17,7 +17,7 @@ def get_steamid_64(account_id: str) -> str:
     return str(int(account_id) + consts.STEAM64_MAX_ID)
 
 
-async def get_player(account_id: str) -> AccountInfo | None:
+async def get_account(account_id: str) -> AccountInfo | None:
     """Get player summary info"""
     if account_id in StaticObjects.CACHE:
         logging.debug("Found cached player summary")

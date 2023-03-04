@@ -4,34 +4,10 @@
 import logging
 import sys
 import time
-from typing import Awaitable, Callable, Optional
 
-from fastapi import FastAPI, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
 from requests import HTTPError, request
 
 from .cache import TTLCache
-
-
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-@app.middleware("http")
-async def time_request(request: Request, call_next: Callable[[Request], Awaitable[Response]]):
-    start = time.perf_counter()
-    response = await call_next(request)
-    time_taken = str(time.perf_counter() - start)
-    logging.info("%ss taken for request: %s", time_taken, request.url.path)
-    response.headers["X-Process-Time"] = time_taken
-    return response
 
 
 class StaticObjects:
@@ -81,7 +57,7 @@ class StaticObjects:
         logging.info("Got items data")
 
 
-def setup_logger() -> None:
+def set_up_logger() -> None:
     """Setup the logger"""
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
@@ -95,7 +71,7 @@ def setup_logger() -> None:
 
 def sync_request(
     url: str,
-    params: Optional[dict] = None,
+    params: dict | None = None,
     method: str = "GET",
     attempts: int = 10,
 ) -> dict:

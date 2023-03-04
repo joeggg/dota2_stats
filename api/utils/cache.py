@@ -4,15 +4,15 @@ import logging
 from secrets import token_hex
 from typing import Any, Callable, List
 
-from redis import Redis, RedisError
+import redis
 
 REDIS_HOST = "redis"
 REDIS_PORT = 6379
 REDIS_ATTEMPTS = 5
 
 
-def get_redis() -> Redis:
-    return Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
+def get_redis() -> redis.Redis:
+    return redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
 
 def retry(func: Callable) -> Callable:
@@ -21,7 +21,7 @@ def retry(func: Callable) -> Callable:
         for i in range(1, REDIS_ATTEMPTS + 1):
             try:
                 return func(*args, **kwargs)
-            except RedisError as exc:
+            except redis.RedisError as exc:
                 logging.error("Failed to cache to Redis (attempt %s): %s. Retrying", i, exc)
         raise
 

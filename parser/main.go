@@ -7,7 +7,6 @@ import (
 	"syscall"
 
 	"github.com/faceit/go-steam"
-	"github.com/faceit/go-steam/netutil"
 	"github.com/faceit/go-steam/protocol/steamlang"
 	"github.com/paralin/go-dota2"
 	"github.com/paralin/go-dota2/events"
@@ -39,7 +38,8 @@ func startDotaClient(lg *logrus.Logger) (*dota2.Dota2, chan bool) {
 	readyCh := make(chan bool)
 
 	lg.Infoln("Connecting to server")
-	sc.ConnectToBind(netutil.ParsePortAddr("103.10.124.162:27018"), nil)
+	steam.InitializeSteamDirectory()
+	sc.Connect()
 	// Steam client message listener
 	go func() {
 		for evt := range sc.Events() {

@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -44,7 +44,7 @@ func (w *Worker) listen() {
 		if err != nil {
 			continue
 		}
-		go w.processReplay(matchId)
+		w.processReplay(matchId)
 	}
 }
 
@@ -101,7 +101,7 @@ func (w *Worker) downloadReplay(matchId uint64) (string, error) {
 		return "", err
 	}
 	decomp := bzip2.NewReader(replayResp.Body)
-	data, err := ioutil.ReadAll(decomp)
+	data, err := io.ReadAll(decomp)
 	if err != nil {
 		return "", err
 	}
